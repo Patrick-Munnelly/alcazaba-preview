@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Lugh API Audit</title>
+  <style>
+    :root {
+      --forest: #1a3a2a;
+      --cream: #f5f0e8;
+      --steel: #4a7a9b;
+      --gold: #c9a96e;
+      --ink: #0d1f17;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--forest);
+      color: var(--cream);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      text-align: center;
+      padding: 2rem;
+    }
+    .card {
+      max-width: 30rem;
+      border: 1px solid var(--gold);
+      padding: 3rem 2.5rem;
+      background: var(--ink);
+    }
+    .kicker {
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
+    }
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    p {
+      color: var(--steel);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .rule {
+      width: 3rem;
+      height: 2px;
+      background: var(--gold);
+      margin: 1.5rem auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="kicker">Lugh</div>
+    <h1>API Audit</h1>
+    <div class="rule"></div>
+    <p>Placeholder page. Live reports deploy here via CI.</p>
+  </div>
+</body>
+</html>
