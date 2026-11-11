@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cookies policy · Alcazaba Beach</title>
+<link rel="icon" href="img/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta name="theme-color" content="#0e3d50">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Holding page: same palette and type as index.html */
+:root {
+  --ink: #13222f; --ink-soft: #3d4f5e; --sea: #175f78; --sea-deep: #0e3d50;
+  --sand: #f7f2e9; --gold: #c2a05a; --gold-soft: #d9c495; --gold-text: #86692c; --white: #ffffff;
+  --font-display: "Fraunces", Georgia, serif; --font-body: "Inter", system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body { font-family: var(--font-body); color: var(--ink); background: var(--sand); line-height: 1.65; min-height: 100vh; display: flex; flex-direction: column; }
+.container { width: min(760px, calc(100% - 48px)); margin-inline: auto; }
+a { color: var(--sea); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--sea); outline-offset: 3px; border-radius: 4px; }
+.on-dark a:focus-visible, .on-dark button:focus-visible { outline-color: var(--gold-soft); }
+.skip-link { position: absolute; left: 12px; top: -60px; z-index: 10; background: var(--white); color: var(--ink); font-weight: 600; font-size: 0.9rem; padding: 10px 16px; border-radius: 8px; }
+.skip-link:focus { top: 12px; }
+#main:focus { outline: none; }
+.site-header { background: var(--sea-deep); padding: 18px 0; }
+.site-header img { display: block; height: 44px; width: auto; filter: brightness(0) invert(1); }
+main { flex: 1; padding: clamp(56px, 9vw, 104px) 0; }
+.kicker { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-text); margin-bottom: 14px; }
+h1 { font-family: var(--font-display); font-weight: 500; font-size: clamp(2rem, 4.5vw, 2.8rem); line-height: 1.15; margin-bottom: 22px; }
+main p { color: var(--ink-soft); font-size: 1.05rem; max-width: 60ch; margin-bottom: 16px; }
+.btn { display: inline-flex; align-items: center; min-height: 48px; padding: 12px 26px; margin-top: 18px; border-radius: 999px; background: var(--gold); color: var(--ink); font-weight: 600; text-decoration: none; }
+.btn:hover { background: var(--gold-soft); }
+.site-footer { background: var(--ink); color: rgba(255, 255, 255, 0.78); font-size: 0.85rem; padding: 26px 0; padding-bottom: calc(26px + env(safe-area-inset-bottom, 0px)); }
+.site-footer .container { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; align-items: center; }
+.site-footer button { font: inherit; color: rgba(255, 255, 255, 0.78); background: none; border: 0; padding: 12px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.site-footer button:hover { color: var(--gold-soft); }
+@media (max-width: 520px) { .container { width: calc(100% - 32px); } }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
+<header class="site-header on-dark">
+  <div class="container">
+    <a href="index.html" data-home data-i18n-aria="brand" aria-label="Alcazaba Beach, home page"><img src="img/logo.png" width="224" height="79" alt="Alcazaba Beach"></a>
+  </div>
+</header>
+<main id="main" tabindex="-1">
+  <div class="container">
+    <p class="kicker" data-i18n="kicker">Legal</p>
+    <h1 data-i18n="title">Cookies policy</h1>
+    <p data-i18n="p1">We are preparing this page. The full text will be published here soon.</p>
+    <p data-i18n="p2">If you have any questions in the meantime, please contact the administration office at <a href="mailto:admin@alcazababeach.com">admin@alcazababeach.com</a> or on <a href="tel:+34952790819">952 790 819</a>.</p>
+    <a class="btn" href="index.html" data-home data-i18n="back">Back to the home page</a>
+  </div>
+</main>
+<footer class="site-footer on-dark">
+  <div class="container">
+    <span data-i18n="copy">© 2026 Comunidad de Propietarios Alcazaba Beach. All rights reserved.</span>
+    <button type="button" class="lang-toggle" data-i18n="switch" lang="es">Versión en español</button>
+  </div>
+</footer>
+<script>
+(function(){
+  var T = {
+    "en": {
+      "skip": "Skip to content",
+      "brand": "Alcazaba Beach, home page",
+      "kicker": "Legal",
+      "p1": "We are preparing this page. The full text will be published here soon.",
+      "p2": "If you have any questions in the meantime, please contact the administration office at <a href=\"mailto:admin@alcazababeach.com\">admin@alcazababeach.com</a> or on <a href=\"tel:+34952790819\">952 790 819</a>.",
+      "back": "Back to the home page",
+      "copy": "© 2026 Comunidad de Propietarios Alcazaba Beach. All rights reserved.",
+      "switch": "Versión en español",
+      "switch_lang": "es",
+      "title": "Cookies policy"
+    },
+    "es": {
+      "skip": "Saltar al contenido",
+      "brand": "Alcazaba Beach, página de inicio",
+      "kicker": "Legal",
+      "p1": "Estamos preparando esta página. El texto completo se publicará aquí próximamente.",
+      "p2": "Si mientras tanto tiene alguna pregunta, puede contactar con la oficina de administración en <a href=\"mailto:admin@alcazababeach.com\">admin@alcazababeach.com</a> o en el <a href=\"tel:+34952790819\">952 790 819</a>.",
+      "back": "Volver a la página de inicio",
+      "copy": "© 2026 Comunidad de Propietarios Alcazaba Beach. Todos los derechos reservados.",
+      "switch": "English version",
+      "switch_lang": "en",
+      "title": "Política de cookies"
+    }
+  };
+  var lang = 'en';
+  function setLang(l){
+    lang = l; var d = T[l];
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-i18n]').forEach(function(el){ el.innerHTML = d[el.getAttribute('data-i18n')]; });
+    document.querySelectorAll('[data-i18n-aria]').forEach(function(el){ el.setAttribute('aria-label', d[el.getAttribute('data-i18n-aria')]); });
+    document.querySelectorAll('[data-home]').forEach(function(a){ a.href = 'index.html' + (l === 'es' ? '?lang=es' : ''); });
+    document.querySelector('.lang-toggle').setAttribute('lang', d.switch_lang);
+    document.title = d.title + ' · Alcazaba Beach';
+    try { history.replaceState(null, '', location.pathname + (l === 'es' ? '?lang=es' : '')); } catch (e) {}
+  }
+  document.querySelector('.lang-toggle').addEventListener('click', function(){ setLang(lang === 'en' ? 'es' : 'en'); });
+  if (new URLSearchParams(location.search).get('lang') === 'es') setLang('es');
+})();
+</script>
+</body>
+</html>

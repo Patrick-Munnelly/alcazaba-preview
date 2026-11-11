@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
-<meta name="theme-color" content="#2a7699">
+<meta name="theme-color" content="#0e3d50">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Alcazaba Beach">
 <meta property="og:title" content="Alcazaba Beach — Estepona, Costa del Sol">
@@ -47,542 +47,686 @@
   "geo": {"@type": "GeoCoordinates", "latitude": 36.4313, "longitude": -5.1186}
 }
 </script>
-<script>document.documentElement.classList.add('lazy')</script>
-<link rel="preload" as="image" href="img/hero.webp" fetchpriority="high">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preload" as="image" href="img/hero-gardens-1100.webp" media="(max-width: 1100px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/hero-gardens.webp" media="(min-width: 1101px)" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&family=Figtree:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#fcfeff; --surface:#e6f0f5; --panel:#ffffff;
-    --ink:#24333c; --muted:#5f727d; --line:#d3e2ea;
-    --accent:#2a7699; --accent-dark:#1f5c78; --accent-soft:#d5e9f2;
-    --onaccent:#ffffff;
-    --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
-    --sans:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
-    --navH:92px;
-    --gold:#c2a05a;
-    --max:1280px; --gutter:clamp(20px,5vw,64px); --section-y:clamp(4rem,8vw,6.5rem);
+/* ============================================================
+   Alcazaba Beach: Luc's design, with accessibility fixes
+   ============================================================ */
+:root {
+  --ink: #13222f;
+  --ink-soft: #3d4f5e;
+  --sea: #175f78;
+  --sea-deep: #0e3d50;
+  --sand: #f7f2e9;
+  --sand-deep: #efe6d5;
+  --gold: #c2a05a;          /* Luc's gold: fills, rules, icons */
+  --gold-soft: #d9c495;     /* gold text on dark sections */
+  --gold-text: #86692c;     /* small gold text on white/sand (WCAG AA 4.6:1+) */
+  --white: #ffffff;
+  --radius: 18px;
+  --shadow: 0 18px 50px -20px rgba(14, 61, 80, 0.35);
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", -apple-system, "Segoe UI", sans-serif;
+  --header-h: 76px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--white);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { max-width: 100%; display: block; }
+a { color: var(--sea); text-decoration: none; }
+.container { width: min(1140px, calc(100% - 48px)); margin-inline: auto; }
+main section[id] { scroll-margin-top: var(--header-h); }
+
+/* ---------- Focus & skip link ---------- */
+a:focus-visible, button:focus-visible { outline: 2px solid var(--sea); outline-offset: 3px; border-radius: 4px; }
+.on-dark a:focus-visible, .on-dark button:focus-visible,
+.site-header:not(.scrolled) a:focus-visible, .site-header:not(.scrolled) button:focus-visible { outline-color: var(--gold-soft); }
+.skip-link {
+  position: absolute; left: 16px; top: -100px; z-index: 200;
+  background: var(--white); color: var(--ink); font-weight: 600; font-size: 0.9rem;
+  padding: 12px 20px; border-radius: 999px; box-shadow: var(--shadow);
+}
+.skip-link:focus { top: 12px; }
+#main:focus { outline: none; } /* skip-link target: focus lands here quietly */
+
+/* ---------- Header ---------- */
+.site-header {
+  position: fixed; inset: 0 0 auto 0; z-index: 100;
+  padding: 18px 0;
+  padding-top: calc(18px + env(safe-area-inset-top, 0px));
+  transition: background 0.35s ease, box-shadow 0.35s ease, padding 0.35s ease;
+}
+.site-header.scrolled {
+  background: rgba(255, 255, 255, 0.96);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  box-shadow: 0 4px 24px rgba(14, 61, 80, 0.12);
+  padding-block: 12px;
+  padding-top: calc(12px + env(safe-area-inset-top, 0px));
+}
+.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.brand { display: block; flex: none; }
+.brand img { height: 44px; width: auto; transition: filter 0.35s ease; }
+.site-header:not(.scrolled) .brand img { filter: brightness(0) invert(1) drop-shadow(0 1px 8px rgba(5, 22, 32, 0.45)); }
+
+.main-nav { display: flex; align-items: center; gap: 28px; }
+.main-nav a {
+  font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 10px rgba(5, 22, 32, 0.55);
+  padding: 6px 0;
+  transition: color 0.25s ease;
+}
+.main-nav a:hover { color: var(--gold-soft); }
+.site-header.scrolled .main-nav a { color: var(--ink-soft); text-shadow: none; }
+.site-header.scrolled .main-nav a:hover { color: var(--sea); }
+
+.lang-switch {
+  display: inline-flex; align-items: center; gap: 2px; padding: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 999px;
+  transition: border-color 0.35s ease;
+}
+.site-header.scrolled .lang-switch, .mobile-menu .lang-switch { border-color: rgba(19, 34, 47, 0.25); }
+.lang-switch button {
+  font: inherit; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+  min-width: 40px; min-height: 30px; padding: 4px 10px;
+  border: 0; border-radius: 999px; background: transparent; cursor: pointer;
+  color: var(--white);
+}
+.site-header.scrolled .lang-switch button, .mobile-menu .lang-switch button { color: var(--ink-soft); }
+.lang-switch button[aria-pressed="true"] { background: var(--gold); color: var(--ink) !important; }
+
+.nav-toggle {
+  display: none; position: relative; z-index: 120;
+  width: 44px; height: 44px; margin-right: -8px;
+  background: none; border: none; cursor: pointer;
+}
+.nav-toggle span, .nav-toggle span::before, .nav-toggle span::after {
+  content: ""; position: absolute; left: 10px; width: 24px; height: 2px;
+  background: var(--white); transition: all 0.3s ease;
+}
+.site-header.scrolled .nav-toggle span,
+.site-header.scrolled .nav-toggle span::before,
+.site-header.scrolled .nav-toggle span::after { background: var(--ink); }
+.nav-toggle span { top: 21px; }
+.nav-toggle span::before { top: -8px; left: 0; }
+.nav-toggle span::after { top: 8px; left: 0; }
+.nav-toggle[aria-expanded="true"] span { background: transparent !important; }
+.nav-toggle[aria-expanded="true"] span::before { top: 0; transform: rotate(45deg); background: var(--ink); }
+.nav-toggle[aria-expanded="true"] span::after { top: 0; transform: rotate(-45deg); background: var(--ink); }
+
+/* Mobile menu: hidden from keyboard and screen readers until opened */
+.mobile-menu {
+  position: fixed; inset: 0; z-index: 90;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px;
+  padding: calc(var(--header-h) + 24px) 24px 40px;
+  background: var(--white); overflow-y: auto;
+  transform: translateX(100%); visibility: hidden;
+  transition: transform 0.35s ease, visibility 0s linear 0.35s;
+}
+.mobile-menu.open { transform: none; visibility: visible; transition-delay: 0s; }
+.mobile-menu a { color: var(--ink); font-size: 1.1rem; font-weight: 500; letter-spacing: 0.06em; padding: 6px 12px; }
+.mobile-menu a:hover { color: var(--sea); }
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative; min-height: 92vh;
+  display: flex; align-items: center;
+  color: var(--white);
+  background:
+    linear-gradient(90deg, rgba(6, 26, 37, 0.94) 0%, rgba(8, 34, 47, 0.86) 38%, rgba(10, 42, 57, 0.52) 68%, rgba(12, 50, 66, 0.28) 100%),
+    linear-gradient(180deg, rgba(6, 26, 37, 0.6) 0%, rgba(6, 26, 37, 0.14) 38%, rgba(6, 26, 37, 0.34) 100%),
+    url("img/hero-gardens.webp") center 45% / cover no-repeat,
+    linear-gradient(168deg, #0d3346 0%, #175f78 46%, #2a7d92 78%, #6fae9f 100%);
+  overflow: hidden;
+}
+@media (max-width: 1100px) {
+  .hero {
+    background:
+      linear-gradient(90deg, rgba(6, 26, 37, 0.94) 0%, rgba(8, 34, 47, 0.86) 38%, rgba(10, 42, 57, 0.52) 68%, rgba(12, 50, 66, 0.28) 100%),
+      linear-gradient(180deg, rgba(6, 26, 37, 0.6) 0%, rgba(6, 26, 37, 0.14) 38%, rgba(6, 26, 37, 0.34) 100%),
+      url("img/hero-gardens-1100.webp") center 45% / cover no-repeat,
+      linear-gradient(168deg, #0d3346 0%, #175f78 46%, #2a7d92 78%, #6fae9f 100%);
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  @media (prefers-reduced-motion:reduce){html,.track{scroll-behavior:auto}*{transition:none!important}}
-  body{font-family:var(--sans);font-weight:300;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
-  a{color:inherit;text-decoration:none}
-  a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-  h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;color:var(--accent)}
-  h1{font-size:clamp(2.6rem,6.5vw,5rem)}
-  h2{font-size:clamp(1.9rem,3.8vw,2.9rem)}
-  h3{font-size:1.4rem}
-  img{max-width:100%}
-  .wrap{max-width:calc(var(--max) + 2*var(--gutter));margin:0 auto;padding:0 var(--gutter)}
-  .eyebrow{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:.9rem;font-weight:400}
-  .lede{font-family:var(--serif);font-size:1.3rem;font-style:italic;color:var(--muted)}
-  .more{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:.3rem;display:inline-block}
-  .more:hover{border-color:var(--accent)}
-  .btn{display:inline-block;border:1px solid var(--accent);color:var(--accent);padding:.75rem 1.6rem;font-size:.95rem;transition:background .2s,color .2s}
-  .btn:hover{background:var(--accent);color:var(--onaccent)}
-  .btn-gold,.btn-gold-outline{border-color:var(--gold);border-radius:999px;padding:.85rem 1.9rem;font-weight:500;transition:background .2s,color .2s,border-color .2s}
-  .btn-gold{background:var(--gold);color:#fff}
-  .btn-gold-outline{background:transparent;color:var(--gold)}
-  .btn-gold:hover,.btn-gold-outline:hover{background:var(--accent);border-color:var(--accent);color:var(--onaccent)}
+}
+.hero::after {
+  content: ""; position: absolute; inset: auto 0 0 0; height: 190px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 190' preserveAspectRatio='none'%3E%3Cpath d='M0,120 C240,180 480,60 720,100 C960,140 1200,60 1440,110 L1440,190 L0,190 Z' fill='%23ffffff' opacity='0.08'/%3E%3Cpath d='M0,150 C280,190 560,110 840,140 C1080,165 1280,120 1440,150 L1440,190 L0,190 Z' fill='%23ffffff'/%3E%3C/svg%3E") bottom / cover no-repeat;
+  pointer-events: none;
+}
+.hero-inner { position: relative; z-index: 2; padding: 160px 0 220px; max-width: 720px; }
+.hero-kicker {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--gold-soft); margin-bottom: 22px;
+}
+.hero-kicker::before { content: ""; width: 42px; height: 1px; background: var(--gold-soft); }
+.hero h1 {
+  font-family: var(--font-display); font-size: clamp(2.6rem, 6vw, 4.4rem);
+  font-weight: 500; line-height: 1.08; margin-bottom: 24px;
+  text-shadow: 0 2px 22px rgba(5, 22, 32, 0.45);
+}
+.hero h1 em { font-style: italic; color: var(--gold-soft); }
+.hero p {
+  font-size: 1.12rem; color: rgba(255, 255, 255, 0.94); max-width: 560px; margin-bottom: 38px;
+  text-shadow: 0 1px 14px rgba(5, 22, 32, 0.55);
+}
 
-  /* ---------- nav ---------- */
-  nav{position:fixed;top:0;left:0;right:0;z-index:30;background:transparent;border-bottom:1px solid transparent;
-      padding-top:env(safe-area-inset-top,0px);
-      transition:background .25s ease,border-color .25s ease,box-shadow .25s ease}
-  nav::before{content:"";position:absolute;left:0;right:0;top:0;height:calc(100% + 70px);pointer-events:none;opacity:1;transition:opacity .25s ease;
-      background:linear-gradient(180deg,rgba(8,22,30,.62) 0%,rgba(8,22,30,.38) 55%,rgba(8,22,30,0) 100%)}
-  nav.solid{background:color-mix(in srgb,var(--bg) 96%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom-color:var(--line);box-shadow:0 1px 18px rgba(20,30,25,.07)}
-  nav.solid::before{opacity:0}
-  nav .wrap{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;height:var(--navH);gap:2rem;
-      transition:text-shadow .2s ease}
-  nav:not(.solid) .wrap{text-shadow:0 1px 3px rgba(8,22,30,.6),0 0 18px rgba(8,22,30,.35)}
-  nav .menu a,.lang button,.lang{transition:color .2s ease,border-color .2s ease}
-  nav:not(.solid) .menu a{font-weight:400}
-  .logo{display:inline-block}
-  .logo-tag{display:block;font-family:var(--sans);font-weight:400;font-size:.58rem;letter-spacing:.24em;color:var(--muted);margin-top:.6rem}
-  .logo-mark{display:block;height:46px;aspect-ratio:224/79;background:url("data:image/png;base64,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") left center/contain no-repeat}
-  nav .logo-mark{transition:filter .2s ease}
-  nav:not(.solid) .logo-mark{filter:brightness(0) invert(1) drop-shadow(0 1px 8px rgba(10,20,15,.45))}
-  .menu{display:flex;flex:1;justify-content:center;gap:clamp(1.1rem,3vw,3.2rem);font-size:.93rem}
-  .menu a{padding:.3rem 0;border-bottom:1px solid transparent;white-space:nowrap}
-  .menu a:hover,.menu a.on{border-color:var(--accent)}
-  nav:not(.solid) .menu a{color:#fff}
-  nav:not(.solid) .menu a:hover,nav:not(.solid) .menu a.on{border-color:#fff}
+/* ---------- Buttons ---------- */
+.btn-row { display: flex; flex-wrap: wrap; gap: 16px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 14px 30px; border-radius: 999px;
+  font: inherit; font-size: 0.9rem; font-weight: 600; letter-spacing: 0.04em;
+  cursor: pointer; border: 0;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+/* Luc's gold, with navy text instead of white: 6.5:1 contrast */
+.btn-primary { background: var(--gold); color: var(--ink); box-shadow: 0 12px 30px -10px rgba(194, 160, 90, 0.55); }
+.btn-primary:hover { transform: translateY(-2px); background: #cfae67; }
+.btn-ghost { border: 1px solid rgba(255, 255, 255, 0.7); color: var(--white); background: transparent; }
+.btn-ghost:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+.btn-dark { background: var(--sea-deep); color: var(--white); }
+.btn-dark:hover { background: var(--sea); transform: translateY(-2px); }
 
-  .lang{display:flex;align-items:center;gap:.15rem;color:var(--muted);font-size:.85rem}
-  .lang button{font:inherit;background:none;border:0;cursor:pointer;color:var(--muted);padding:.55rem .35rem;min-width:44px;min-height:44px}
-  .lang button[aria-pressed="true"]{color:var(--accent);font-weight:500}
-  nav:not(.solid) .lang,nav:not(.solid) .lang button{color:rgba(255,255,255,.82)}
-  nav:not(.solid) .lang button[aria-pressed="true"]{color:#fff}
-  @media(max-width:900px){.menu{display:none}}
+/* ---------- Stats band ---------- */
+.stats { position: relative; z-index: 3; margin-top: -90px; }
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); list-style: none;
+  background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden;
+}
+.stat { padding: 34px 24px; text-align: center; border-left: 1px solid var(--sand-deep); }
+.stat:first-child { border-left: none; }
+.stat strong { display: block; font-family: var(--font-display); font-size: 2.1rem; font-weight: 500; color: var(--sea-deep); }
+.stat span { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
 
-  /* ---------- mobile menu ---------- */
-  .burger{display:none;position:relative;width:44px;height:44px;margin-right:-10px;border:0;background:transparent;cursor:pointer;z-index:2}
-  .burger span{position:absolute;left:11px;right:11px;height:1.5px;background:var(--accent);
-      transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .25s ease,background .2s ease}
-  .burger span:nth-child(1){top:15px} .burger span:nth-child(2){top:21px} .burger span:nth-child(3){top:27px}
-  nav:not(.solid) .burger span{background:#fff}
-  .burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6px) rotate(45deg)}
-  .burger[aria-expanded="true"] span:nth-child(2){opacity:0}
-  .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-  .mobile-menu{position:fixed;left:0;right:0;bottom:0;top:calc(env(safe-area-inset-top,0px) + var(--navH));z-index:25;
-      display:flex;flex-direction:column;padding:1.5rem var(--gutter) calc(2rem + env(safe-area-inset-bottom,0px));
-      background:var(--bg);overflow-y:auto;opacity:0;visibility:hidden;transform:translateY(-10px);
-      transition:opacity .35s ease,transform .35s ease,visibility 0s linear .35s}
-  .mobile-menu.open{opacity:1;visibility:visible;transform:none;transition-delay:0s}
-  .mm-link{font-family:var(--serif);font-size:1.8rem;color:var(--accent);padding:.7rem 0;border-bottom:1px solid var(--line)}
-  .mm-foot{margin-top:auto;padding-top:2rem;display:flex;justify-content:flex-start;align-items:center}
-  @media(max-width:900px){.burger{display:block}.nav-right{display:none}}
-  @media(min-width:901px){.mobile-menu{display:none}}
-  main section[id],footer[id]{scroll-margin-top:var(--navH)}
+/* ---------- Sections ---------- */
+section { padding: 96px 0; }
+.section-head { max-width: 640px; margin-bottom: 56px; }
+.section-head.center { margin-inline: auto; text-align: center; }
+.kicker {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 0.74rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold-text); margin-bottom: 14px;
+}
+.section-head h2, .heading {
+  font-family: var(--font-display); font-size: clamp(1.9rem, 3.6vw, 2.7rem);
+  font-weight: 500; line-height: 1.15; margin-bottom: 16px;
+}
+.section-head p { color: var(--ink-soft); font-size: 1.02rem; }
 
-  /* ---------- photos ---------- */
-  .photo{position:relative;overflow:hidden;background:linear-gradient(160deg,#a9c4d6,#5f8fae 55%,#2f5f7f);background-size:cover;background-position:center}
-  .am-grid .photo::after,.strip .photo::after,.vision .photo::after{
-      content:"";position:absolute;inset:0;pointer-events:none;
-      background:linear-gradient(180deg,rgba(20,26,24,.22) 0%,rgba(20,26,24,0) 28%,rgba(20,26,24,0) 64%,rgba(20,26,24,.28) 100%)}
-  .ph-hero{background-image:url("img/hero.webp");background-position:center 45%}
-  html:not(.lazy) .ph-gardens,.ph-gardens.seen{background-image:url("img/gardens.webp")}
-  html:not(.lazy) .ph-coast,.ph-coast.seen{background-image:url("img/coast.webp")}
-  html:not(.lazy) .ph-beach,.ph-beach.seen{background-image:url("img/beach.webp")}
-  .ph-arch{background-position:center 60%}
-  html:not(.lazy) .ph-arch,.ph-arch.seen{background-image:url("img/arch.webp")}
-  html:not(.lazy) .ph-pool,.ph-pool.seen{background-image:url("img/pool.webp")}
-  .ph-tennis{background-position:center 65%}
-  html:not(.lazy) .ph-tennis,.ph-tennis.seen{background-image:url("img/tennis.webp")}
-  html:not(.lazy) .ph-social,.ph-social.seen{background-image:url("img/social.webp")}
-  html:not(.lazy) .ph-flowers,.ph-flowers.seen{background-image:url("img/flowers.webp")}
-  html:not(.lazy) .thumbs .ph-flowers,.thumbs .ph-flowers.seen{background-image:url("img/flowers-thumb.webp")}
-  html:not(.lazy) .ph-poolsea,.ph-poolsea.seen{background-image:url("img/poolsea.webp")}
-  html:not(.lazy) .thumbs .ph-poolsea,.thumbs .ph-poolsea.seen{background-image:url("img/poolsea-thumb.webp")}
-  html:not(.lazy) .ph-gazebo,.ph-gazebo.seen{background-image:url("img/gazebo.webp")}
-  html:not(.lazy) .thumbs .ph-gazebo,.thumbs .ph-gazebo.seen{background-image:url("img/gazebo-thumb.webp")}
-  html:not(.lazy) .ph-terrace,.ph-terrace.seen{background-image:url("img/terrace.webp")}
-  html:not(.lazy) .thumbs .ph-terrace,.thumbs .ph-terrace.seen{background-image:url("img/terrace-thumb.webp")}
-  html:not(.lazy) .ph-gpool,.ph-gpool.seen{background-image:url("img/gpool.webp")}
-  html:not(.lazy) .thumbs .ph-gpool,.thumbs .ph-gpool.seen{background-image:url("img/gpool-thumb.webp")}
-  html:not(.lazy) .ph-lawn,.ph-lawn.seen{background-image:url("img/lawn.webp")}
-  html:not(.lazy) .thumbs .ph-lawn,.thumbs .ph-lawn.seen{background-image:url("img/lawn-thumb.webp")}
-  html:not(.lazy) .ph-aerial,.ph-aerial.seen{background-image:url("img/aerial.webp")}
+/* ---------- Heritage ---------- */
+.heritage { background: var(--white); }
+.heritage-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 64px; align-items: center; }
+.heritage-copy .heading { margin-bottom: 20px; }
+.heritage-copy p { color: var(--ink-soft); margin-bottom: 18px; }
+.heritage-copy p strong { color: var(--ink); font-weight: 600; }
+.award {
+  display: flex; gap: 16px; align-items: flex-start;
+  margin-top: 28px; padding: 22px 24px;
+  background: var(--sand); border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.award svg { width: 34px; height: 34px; flex: none; margin-top: 3px; }
+.award h3 { font-size: 0.95rem; font-weight: 600; line-height: 1.65; }
+.award p { font-size: 0.9rem; color: var(--ink-soft); margin: 0; }
 
-  /* ---------- hero ---------- */
-  .hero{height:calc(clamp(320px,62vh,680px) + var(--navH) + env(safe-area-inset-top,0px));background-position:center 45%}
-  .hero-intro{padding:2.75rem 0 3.5rem;text-align:center}
-  .hero-intro h1{font-family:'Fraunces',Georgia,serif;font-size:clamp(2.6rem,6vw,4.4rem);font-weight:500;line-height:1.08}
-  .hero-intro h1 em{font-style:italic}
-  .btn-row{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem}
-  .hero-intro .stats{max-width:760px;margin:2.8rem auto 0;padding-top:2.2rem;border-top:1px solid var(--line)}
-  .hero-intro p.sub{font-family:var(--serif);font-size:1.35rem;font-style:italic;color:var(--muted);
-      max-width:52ch;margin:1rem auto 1.6rem}
+.ph {
+  position: relative; border-radius: var(--radius); overflow: hidden;
+  min-height: 320px; box-shadow: var(--shadow); background: var(--sand-deep);
+}
+.ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ph-tall { min-height: 460px; }
 
-  /* ---------- setting strip ---------- */
-  .strip{padding:var(--section-y) 0;background:linear-gradient(180deg,var(--surface) 0%,var(--surface) 62%,color-mix(in srgb,var(--surface) 30%,var(--bg)) 100%)}
-  .strip .head{margin-bottom:2.4rem}
-  .strip .cols{display:grid;grid-template-columns:repeat(3,1fr);column-gap:4rem}
-  .strip .col{display:flex;flex-direction:column;gap:1.2rem;position:relative}
-  .strip .col+.col::before{content:"";position:absolute;left:-2rem;top:0;bottom:0;border-left:1px solid var(--line)}
-  .strip .photo{aspect-ratio:16/10}
-  .strip h3{font-size:1.25rem;margin-bottom:.5rem}
-  .strip p{font-size:.92rem;color:var(--muted);margin-bottom:.9rem}
-  @media(max-width:980px){.strip .cols{grid-template-columns:1fr;gap:2.5rem}.strip .col+.col::before{display:none}.strip .col{display:grid;gap:1.2rem;grid-template-columns:minmax(120px,38%) 1fr;align-items:start}.strip .photo{aspect-ratio:1}}
+/* ---------- Vision ---------- */
+.vision { background: var(--sea-deep); color: var(--white); padding: clamp(78px, 11vw, 140px) 0; position: relative; overflow: hidden; }
+.vision::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(120% 80% at 85% 10%, rgba(194, 160, 90, 0.22) 0%, rgba(194, 160, 90, 0) 62%);
+}
+.vision-inner { max-width: 860px; margin: 0 auto; text-align: center; position: relative; }
+.vision-kicker {
+  display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.26em; text-transform: uppercase;
+  color: #d8bd80; margin: 0 0 26px;
+}
+.vision-rule { width: 54px; height: 2px; background: var(--gold); margin: 0 auto 30px; }
+.vision blockquote {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(1.45rem, 3.4vw, 2.5rem); line-height: 1.32; letter-spacing: -0.01em;
+}
+.vision-sig { margin-top: 32px; font-size: 0.82rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); }
 
-  /* ---------- heritage ---------- */
-  .intro{padding:var(--section-y) 0;text-align:center;
-      background:radial-gradient(125% 75% at 50% 0%,color-mix(in srgb,var(--accent-soft) 60%,transparent) 0%,transparent 68%)}
-  .intro h2{max-width:22ch;margin:0 auto}
-  .intro p.body{max-width:62ch;margin:1.3rem auto 0;font-size:1.05rem;text-align:left}
-  .stats{display:flex;justify-content:center;gap:3.5rem;margin-top:3.2rem;flex-wrap:wrap}
-  .stats div{font-family:var(--serif);font-size:2.1rem;color:var(--accent);line-height:1}
-  .stats small{display:block;font-family:var(--sans);font-size:.82rem;color:var(--muted);margin-top:.4rem}
+/* ---------- Amenities ---------- */
+.amenities { background: var(--sand); }
+.amenity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; list-style: none; }
+.amenity {
+  background: var(--white); border-radius: var(--radius); padding: 30px 28px;
+  box-shadow: 0 10px 30px -18px rgba(14, 61, 80, 0.25);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+.amenity:hover { transform: translateY(-5px); box-shadow: 0 22px 44px -18px rgba(14, 61, 80, 0.32); }
+.amenity .icon, .owner-card .icon {
+  width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 20px;
+  background: linear-gradient(150deg, var(--sea) 0%, var(--sea-deep) 100%);
+}
+.amenity .icon svg, .owner-card .icon svg { width: 26px; height: 26px; }
+.amenity h3 { font-family: var(--font-display); font-size: 1.18rem; font-weight: 600; margin-bottom: 8px; }
+.amenity p { font-size: 0.92rem; color: var(--ink-soft); }
 
-  /* ---------- vision split ---------- */
-  .vision{display:grid;grid-template-columns:5fr 7fr;align-items:stretch;background:var(--panel)}
-  .vision .photo{min-height:560px;background-position:center 60%}
-  .vision .inner{display:grid;grid-template-columns:minmax(0,640px);gap:2.2rem;align-content:center;
-      padding:var(--section-y) var(--gutter) var(--section-y) clamp(2rem,4vw,4rem)}
-  .vision .lede{color:var(--ink);font-size:1.32rem;line-height:1.45;max-width:48ch}
-  .vision cite{display:block;font-style:normal;font-size:.8rem;color:var(--muted);margin-top:1rem}
-  .award{margin-top:2.2rem;padding-top:1.6rem;border-top:1px solid var(--line)}
-  .award h3{font-size:1.3rem;margin-bottom:.5rem}
-  .award p{color:var(--muted);font-size:.92rem;max-width:44ch}
-  .facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.1rem 2rem;font-size:.92rem;
-      padding-top:1.6rem;border-top:1px solid var(--line)}
-  .fact{display:flex;gap:.9rem;align-items:center}
-  .fact svg,.am-more svg{width:26px;height:26px;flex:0 0 26px;stroke:var(--accent);fill:none;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
-  @media(max-width:1050px){.vision{grid-template-columns:1fr}.vision .photo{min-height:340px}
-    .vision .inner{padding:var(--section-y) var(--gutter)}}
-  @media(max-width:520px){.facts{grid-template-columns:1fr}}
+/* ---------- The Setting ---------- */
+.feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+.feature-card {
+  position: relative; border-radius: var(--radius); overflow: hidden; min-height: 420px;
+  display: flex; align-items: flex-end; color: var(--white); box-shadow: var(--shadow); background: var(--sea-deep);
+}
+.feature-card > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.feature-card .overlay {
+  position: relative; width: 100%; padding: 120px 32px 32px;
+  background: linear-gradient(180deg, rgba(8, 32, 45, 0) 0%, rgba(8, 32, 45, 0.5) 40%, rgba(8, 32, 45, 0.9) 100%);
+}
+.feature-card h3 { font-family: var(--font-display); font-size: 1.55rem; font-weight: 500; margin-bottom: 8px; text-shadow: 0 1px 12px rgba(5, 22, 32, 0.5); }
+.feature-card p { font-size: 0.95rem; color: rgba(255, 255, 255, 0.92); max-width: 420px; text-shadow: 0 1px 10px rgba(5, 22, 32, 0.5); }
 
-  /* ---------- amenities ---------- */
-  .amenities{padding:var(--section-y) 0}
-  .am-head{display:grid;grid-template-columns:1.4fr 1fr;gap:1rem 3rem;align-items:end;margin-bottom:2.6rem}
-  .am-head h2{max-width:22ch}
-  .am-head > p{color:var(--muted);font-size:.95rem;max-width:40ch}
-  .am-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
-  .am-grid .photo{aspect-ratio:4/3}
-  .am-grid h3{font-size:1.1rem;margin:.8rem 0 .3rem}
-  .am-grid p,.am-more p{color:var(--muted);font-size:.85rem;line-height:1.5}
-  .am-more{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem 2rem;margin-top:3.5rem;padding-top:2.4rem;border-top:1px solid var(--line)}
-  .am-more > div{display:grid;grid-template-columns:26px 1fr;gap:.9rem;align-items:start}
-  .am-more h3{font-size:1.1rem;margin-bottom:.3rem}
-  @media(max-width:980px){.am-head{grid-template-columns:1fr}.am-more{grid-template-columns:1fr 1fr}}
-  @media(max-width:640px){.am-grid{grid-template-columns:1fr}.am-grid .photo{aspect-ratio:3/2}}
-  @media(max-width:420px){.am-more{grid-template-columns:1fr}}
+/* ---------- Gallery ---------- */
+.gallery { background: var(--white); }
+.gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 262px; gap: 20px; list-style: none; }
+.gallery-grid .ph { min-height: 0; box-shadow: 0 10px 30px -18px rgba(14, 61, 80, 0.3); }
 
-  /* ---------- gallery carousel ---------- */
-  .gallery{padding:var(--section-y) 0;background:linear-gradient(180deg,color-mix(in srgb,var(--surface) 35%,var(--bg)) 0%,var(--surface) 14%,var(--surface) 86%,color-mix(in srgb,var(--surface) 35%,var(--bg)) 100%)}
-  .gallery .head{text-align:center;margin-bottom:2.6rem}
-  .carousel{position:relative}
-  .track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-  .track::-webkit-scrollbar{display:none}
-  .track:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
-  .slide{flex:0 0 100%;scroll-snap-align:center;margin:0;position:relative}
-  .slide .photo{aspect-ratio:16/9;width:100%;max-height:min(60vh,620px)}
-  .c-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:48px;height:48px;border-radius:50%;
-      border:1px solid rgba(255,255,255,.8);background:rgba(255,255,255,.9);color:var(--accent);cursor:pointer;
-      display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s,opacity .2s}
-  .c-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
-  .c-btn:disabled{opacity:0;pointer-events:none}
-  .c-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-  .c-prev{left:1rem} .c-next{right:1rem}
-  .c-foot{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:1.1rem}
-  .c-count{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums;min-width:4ch}
-  .dots{display:flex;gap:.2rem}
-  .dots button{width:44px;height:44px;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
-  .dots button::before{content:"";width:28px;height:2px;background:var(--line);transition:background .25s}
-  .dots button[aria-current="true"]::before{background:var(--accent)}
-  .thumbs{display:grid;grid-template-columns:repeat(6,1fr);gap:.5rem;margin-top:.6rem}
-  .thumbs button{padding:0;border:0;cursor:pointer;background:none;opacity:.55;transition:opacity .25s;outline-offset:2px}
-  .thumbs button:hover,.thumbs button[aria-current="true"]{opacity:1}
-  .thumbs button[aria-current="true"] .photo{box-shadow:0 0 0 2px var(--accent)}
-  .thumbs .photo{aspect-ratio:3/2}
-  @media(min-width:761px){.dots{display:none}}
-  @media(max-width:760px){.slide .photo{aspect-ratio:4/3}
-    .c-btn{width:44px;height:44px}.c-prev{left:.5rem}.c-next{right:.5rem}.thumbs{display:none}}
+/* ---------- Location ---------- */
+.location { background: var(--sea-deep); color: var(--white); }
+.location .kicker { color: var(--gold-soft); }
+.location .section-head h2 { color: var(--white); }
+.location .section-head p { color: rgba(255, 255, 255, 0.8); }
+.location-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 48px; align-items: start; }
+.loc-list { list-style: none; display: grid; gap: 18px; }
+.loc-list li { display: flex; gap: 16px; align-items: flex-start; padding-bottom: 18px; border-bottom: 1px solid rgba(255, 255, 255, 0.14); }
+.loc-list svg { width: 22px; height: 22px; flex: none; margin-top: 4px; }
+.loc-list strong { display: block; font-size: 0.95rem; font-weight: 600; }
+.loc-list span { font-size: 0.88rem; color: rgba(255, 255, 255, 0.76); }
+.map-frame {
+  border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.06);
+}
+.map { position: relative; aspect-ratio: 16 / 10; background: #0b3242; }
+.map img, .map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; }
+.map-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; padding: 20px 22px; }
+.map-actions small { flex: 1 1 220px; font-size: 0.84rem; color: rgba(255, 255, 255, 0.78); }
+.map-open { display: block; padding: 0 22px 20px; font-size: 0.88rem; font-weight: 600; color: var(--gold-soft); }
+.map-open:hover { text-decoration: underline; }
 
-  /* ---------- location ---------- */
-  .location{padding:var(--section-y) 0}
-  .location .head p{color:var(--muted);margin-top:.9rem;font-size:.95rem}
-  .loc-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:3.5rem;margin-top:2.8rem;align-items:stretch}
-  .loc-list{list-style:none;display:flex;flex-direction:column}
-  .loc-list li{flex:1;display:grid;grid-template-columns:26px 1fr;gap:1rem;align-content:center;padding:1.1rem 0;border-bottom:1px solid var(--line)}
-  .loc-list li:first-child{border-top:1px solid var(--line)}
-  .loc-list svg{width:26px;height:26px;stroke:var(--accent);fill:none;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
-  .loc-list strong{display:block;font-family:var(--serif);font-weight:500;font-size:1.2rem;color:var(--accent);line-height:1.2}
-  .loc-list span{font-size:.9rem;color:var(--muted)}
-  .panel{border:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column}
-  .panel .bar{background:var(--surface);padding:.7rem 1.2rem;font-size:.78rem;color:var(--muted);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-  .panel .bar a{color:var(--accent);border-bottom:1px solid var(--line)}
-  .panel .bar a:hover{border-color:var(--accent)}
-  .map{aspect-ratio:16/10}
-  .map.loaded{background:var(--surface)}
-  .map iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:1}
-  .map-actions{display:flex;flex-direction:column;align-items:flex-start;gap:.6rem;padding:1.2rem}
-  .map-actions .btn{font-family:var(--sans);font-size:.95rem;cursor:pointer}
-  .map-actions small{color:var(--muted);font-size:.78rem;max-width:40ch}
-  @media(max-width:900px){.loc-grid{grid-template-columns:1fr}}
+/* ---------- Owners ---------- */
+.owners { background: var(--sand); }
+.owners-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; max-width: 820px; margin-inline: auto; }
+.owner-card {
+  background: var(--white); border-radius: var(--radius); padding: 34px 30px;
+  box-shadow: 0 10px 30px -18px rgba(14, 61, 80, 0.25);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.owner-card .icon { margin-bottom: 0; background: linear-gradient(150deg, var(--gold) 0%, #a98844 100%); }
+.owner-card h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; }
+.owner-card p { font-size: 0.92rem; color: var(--ink-soft); flex: 1; }
+.owner-card .btn { align-self: flex-start; padding: 11px 24px; font-size: 0.84rem; min-height: 44px; }
 
-  /* ---------- footer ---------- */
-  footer{padding:var(--section-y) 0 calc(2rem + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,color-mix(in srgb,var(--surface) 45%,var(--bg)) 0%,var(--surface) 35%);font-size:.9rem;color:var(--muted)}
-  footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1.2fr .9fr;gap:2.5rem}
-  footer .logo{display:inline-block;margin-bottom:1rem}
-  footer .logo-mark{height:52px}
-  footer .blurb{max-width:34ch}
-  @media(max-width:860px){footer .cols{grid-template-columns:1fr 1fr}}
-  @media(max-width:520px){footer .cols{grid-template-columns:1fr}}
-  footer h4{font-family:var(--serif);color:var(--accent);font-size:1.2rem;font-weight:500;margin-bottom:.8rem}
-  footer li{list-style:none;margin:.35rem 0}
-  footer a:hover{color:var(--accent)}
-  footer address{font-style:normal;margin-bottom:.8rem}
-  footer .office{font-size:.82rem;margin-top:.8rem}
-  footer .base{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:.78rem}
-  footer .base button{font:inherit;background:none;border:0;color:var(--accent);cursor:pointer;padding:.5rem 0;border-bottom:1px solid var(--line)}
+/* ---------- Footer ---------- */
+.site-footer { background: var(--ink); color: rgba(255, 255, 255, 0.78); padding: 72px 0 36px; padding-bottom: calc(36px + env(safe-area-inset-bottom, 0px)); }
+.footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1.1fr 0.9fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand img { height: 52px; width: auto; filter: brightness(0) invert(1); }
+.footer-brand .tag { display: block; margin: 12px 0 18px; font-size: 0.62rem; font-weight: 500; letter-spacing: 0.34em; text-transform: uppercase; color: var(--gold-soft); }
+.footer-brand p { font-size: 0.9rem; max-width: 320px; }
+.site-footer h2 { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-soft); margin-bottom: 18px; }
+.site-footer ul { list-style: none; display: grid; gap: 10px; }
+.site-footer a { color: rgba(255, 255, 255, 0.78); font-size: 0.9rem; }
+.site-footer a:hover { color: var(--gold-soft); }
+.site-footer li, .site-footer address { font-size: 0.9rem; font-style: normal; }
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.12); padding-top: 28px;
+  display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center;
+  font-size: 0.8rem; color: rgba(255, 255, 255, 0.6);
+}
+.footer-bottom button {
+  font: inherit; font-size: 0.8rem; background: none; border: 0; cursor: pointer;
+  color: rgba(255, 255, 255, 0.78); padding: 8px 0; text-decoration: underline; text-underline-offset: 3px;
+}
+.footer-bottom button:hover { color: var(--gold-soft); }
+
+/* ---------- Reveal animation (only with JS, never with reduced motion) ---------- */
+.js .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.js .reveal.visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+  .amenity:hover, .btn:hover { transform: none; }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 960px) {
+  .heritage-grid, .location-grid { grid-template-columns: 1fr; gap: 40px; }
+  .amenity-grid, .owners-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat:nth-child(odd) { border-left: none; }
+  .stat:nth-child(n+3) { border-top: 1px solid var(--sand-deep); }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .main-nav { gap: 20px; }
+}
+@media (max-width: 900px) {
+  .main-nav { display: none; }
+  .nav-toggle { display: block; }
+}
+@media (min-width: 901px) {
+  .mobile-menu { display: none; }
+}
+@media (max-width: 720px) {
+  .brand img { height: 38px; }
+  /* On phones the text spans the full width, so Luc's left-to-right shade is evened out */
+  .hero {
+    background:
+      linear-gradient(180deg, rgba(6, 26, 37, 0.84) 0%, rgba(8, 34, 47, 0.78) 40%, rgba(8, 34, 47, 0.7) 65%, rgba(8, 34, 47, 0.5) 100%),
+      url("img/hero-gardens-1100.webp") 40% 45% / cover no-repeat,
+      linear-gradient(168deg, #0d3346 0%, #175f78 46%, #2a7d92 78%, #6fae9f 100%);
+  }
+  .hero-inner { padding: 140px 0 200px; }
+  section { padding: 72px 0; }
+  .amenity-grid, .owners-grid, .feature-grid, .gallery-grid { grid-template-columns: 1fr; }
+  .ph-tall { min-height: 340px; }
+  .feature-card { min-height: 360px; }
+}
+@media (max-width: 520px) {
+  .container { width: calc(100% - 32px); }
+  .stat { padding: 26px 12px; }
+  .stat strong { font-size: 1.7rem; }
+  .stat span { letter-spacing: 0.08em; }
+  .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+  .hero-kicker { letter-spacing: 0.22em; }
+}
+@media (max-width: 400px) {
+  .hero h1 { font-size: 2.2rem; }
+}
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="wrap">
-    <a class="logo" href="#top"><span class="logo-mark" role="img" aria-label="Alcazaba Beach"></span></a>
-    <div class="menu">
+<a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="#top" data-i18n-aria="brand_label" aria-label="Alcazaba Beach, back to top"><img src="img/logo.png" width="224" height="79" alt="Alcazaba Beach"></a>
+    <nav class="main-nav" data-i18n-aria="nav_label" aria-label="Main">
       <a href="#heritage" data-i18n="nav_heritage">Heritage</a>
       <a href="#vision" data-i18n="nav_vision">Vision</a>
       <a href="#amenities" data-i18n="nav_amenities">Amenities</a>
       <a href="#gallery" data-i18n="nav_gallery">Gallery</a>
       <a href="#location" data-i18n="nav_location">Location</a>
-      <a href="#contact" data-i18n="nav_contact">Contact</a>
-      <a href="https://patrick-munnelly.github.io/alcazaba-owner-preview/" data-i18n="nav_owners">Owners</a>
-    </div>
-    <div class="nav-right">
-      <div class="lang" role="group" data-i18n-aria="lang_label" aria-label="Language">
-        <button type="button" data-lang="en" aria-pressed="true" lang="en">EN</button><span aria-hidden="true">/</span><button type="button" data-lang="es" aria-pressed="false" lang="es">ES</button>
+      <a href="#owners" data-i18n="nav_owners">Owners</a>
+      <div class="lang-switch" role="group" data-i18n-aria="lang_label" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true" lang="en" aria-label="EN, English">EN</button><button type="button" data-lang="es" aria-pressed="false" lang="es" aria-label="ES, Español">ES</button>
       </div>
-    </div>
-    <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
-      <span></span><span></span><span></span>
-    </button>
+    </nav>
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
+  </div>
+</header>
+
+<nav class="mobile-menu" id="mobile-menu" data-i18n-aria="nav_label" aria-label="Main">
+  <a href="#heritage" data-i18n="nav_heritage">Heritage</a>
+  <a href="#vision" data-i18n="nav_vision">Vision</a>
+  <a href="#amenities" data-i18n="nav_amenities">Amenities</a>
+  <a href="#gallery" data-i18n="nav_gallery">Gallery</a>
+  <a href="#location" data-i18n="nav_location">Location</a>
+  <a href="#owners" data-i18n="nav_owners">Owners</a>
+  <div class="lang-switch" role="group" data-i18n-aria="lang_label" aria-label="Language">
+    <button type="button" data-lang="en" aria-pressed="true" lang="en" aria-label="EN, English">EN</button><button type="button" data-lang="es" aria-pressed="false" lang="es" aria-label="ES, Español">ES</button>
   </div>
 </nav>
 
-<div class="mobile-menu" id="mobile-menu">
-  <a class="mm-link" href="#heritage" data-i18n="nav_heritage">Heritage</a>
-  <a class="mm-link" href="#vision" data-i18n="nav_vision">Vision</a>
-  <a class="mm-link" href="#amenities" data-i18n="nav_amenities">Amenities</a>
-  <a class="mm-link" href="#gallery" data-i18n="nav_gallery">Gallery</a>
-  <a class="mm-link" href="#location" data-i18n="nav_location">Location</a>
-  <a class="mm-link" href="#contact" data-i18n="nav_contact">Contact</a>
-  <a class="mm-link" href="https://patrick-munnelly.github.io/alcazaba-owner-preview/" data-i18n="nav_owners">Owners</a>
-  <div class="mm-foot">
-    <div class="lang" role="group" data-i18n-aria="lang_label" aria-label="Language">
-      <button type="button" data-lang="en" aria-pressed="true" lang="en">EN</button><span aria-hidden="true">/</span><button type="button" data-lang="es" aria-pressed="false" lang="es">ES</button>
-    </div>
-  </div>
-</div>
-
 <main id="top">
 
-<section class="photo hero ph-hero" role="img" data-i18n-aria="img_hero" aria-label="Alcazaba Beach apartments among palms and lawns"></section>
+  <!-- Hero -->
+  <section class="hero on-dark" aria-labelledby="hero-h">
+    <div class="container hero-inner" id="main" tabindex="-1">
+      <p class="hero-kicker" data-i18n="hero_kicker">Estepona's New Golden Mile</p>
+      <h1 id="hero-h" data-i18n="hero_h">Mediterranean living, <em>perfected</em> over decades.</h1>
+      <p data-i18n="hero_p">380 luxury apartments set in 75,000 m² of award-winning tropical gardens, with over half a kilometre of private beachfront in Estepona.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="#heritage" data-i18n="hero_btn">Discover Alcazaba Beach</a>
+        <a class="btn btn-ghost" href="https://patrick-munnelly.github.io/alcazaba-owner-preview/" data-i18n="hero_owners">Owners' Area</a>
+      </div>
+    </div>
+  </section>
 
-<section class="hero-intro">
-  <div class="wrap">
-    <h1 data-i18n="hero_h">Mediterranean living,<br><em>perfected</em> over decades.</h1>
-    <p class="sub" data-i18n="hero_p">380 luxury apartments set in 75,000 m² of award-winning tropical gardens, with over half a kilometre of private beachfront in Estepona.</p>
-    <div class="btn-row">
-      <a class="btn btn-gold" href="#heritage" data-i18n="hero_btn">Discover Alcazaba Beach</a>
-      <a class="btn btn-gold-outline" href="https://patrick-munnelly.github.io/alcazaba-owner-preview/" data-i18n="hero_owners">Owners' Area</a>
-    </div>
-    <div class="stats">
-      <div><span data-i18n="st1_n">380</span><small data-i18n="st1_l">apartments</small></div>
-      <div><span data-i18n="st2_n">500 m</span><small data-i18n="st2_l">of beachfront</small></div>
-      <div><span data-i18n="st3_n">75,000 m²</span><small data-i18n="st3_l">of gardens</small></div>
-      <div><span data-i18n="st4_n">7</span><small data-i18n="st4_l">swimming pools</small></div>
+  <!-- Stats -->
+  <div class="stats">
+    <div class="container">
+      <ul class="stats-grid reveal" data-i18n-aria="stats_label" aria-label="Alcazaba Beach in numbers">
+        <li class="stat"><strong>380</strong><span data-i18n="st1">Apartments</span></li>
+        <li class="stat"><strong>500&nbsp;m</strong><span data-i18n="st2">Beachfront</span></li>
+        <li class="stat"><strong data-i18n="st3_n">75,000&nbsp;m²</strong><span data-i18n="st3">Gardens</span></li>
+        <li class="stat"><strong>7</strong><span data-i18n="st4">Swimming pools</span></li>
+      </ul>
     </div>
   </div>
-</section>
 
-<section class="intro" id="heritage">
-  <div class="wrap">
-    <p class="eyebrow" data-i18n="her_eyebrow">Our Heritage</p>
-    <h2 data-i18n="her_h">A landmark of the Costa del Sol, in Estepona</h2>
-    <p class="body" data-i18n="her_p1">Conceived in the late 1980s and completed across five phases, Alcazaba Beach was designed by the renowned architect Melvin Villarroel, whose vision placed human space, the natural environment and Andalusian design tradition at the heart of the community.</p>
-    <p class="body" data-i18n="her_p2">Today it remains one of the most prestigious residential estates on the coast: low-rise Mediterranean architecture woven through mature tropical gardens, cascading water features and shaded walkways, all meticulously maintained and just ten minutes from the historic centre of Estepona.</p>
-  </div>
-</section>
+  <!-- Heritage -->
+  <section class="heritage" id="heritage" aria-labelledby="her-h">
+    <div class="container heritage-grid">
+      <div class="heritage-copy reveal">
+        <p class="kicker" data-i18n="her_kicker">Our Heritage</p>
+        <h2 class="heading" id="her-h" data-i18n="her_h">A landmark of the Costa del Sol, in Estepona</h2>
+        <p data-i18n="her_p1">Conceived in the late 1980s and completed across five phases, Alcazaba Beach was designed by the renowned architect <strong>Melvin Villarroel</strong>, whose vision placed human space, the natural environment and Andalusian design tradition at the heart of the community.</p>
+        <p data-i18n="her_p2">Today it remains one of the most prestigious residential estates on the coast: low-rise Mediterranean architecture woven through mature tropical gardens, cascading water features and shaded walkways — all meticulously maintained and just ten minutes from the historic centre of Estepona.</p>
+        <div class="award">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z" stroke="#c2a05a" stroke-width="1.6"/><path d="M8.5 14 7 21l5-2.5L17 21l-1.5-7" stroke="#c2a05a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div>
+            <h3 data-i18n="aw_h">Awards</h3>
+            <p data-i18n="aw_p">Alcazaba Beach has received several awards, such as Best Development on the Costa del Sol, Best Community Gardens on the Costa del Sol and the Architectural Heritage Prize for Urbanisations of Environmental Interest, awarded by the Government of Andalucía.</p>
+          </div>
+        </div>
+      </div>
+      <div class="ph ph-tall reveal">
+        <img src="img/arch.webp" width="1200" height="900" loading="lazy" decoding="async" data-i18n-alt="img_heritage" alt="White Mediterranean terraces of Alcazaba Beach among palm gardens, with the mountains behind">
+      </div>
+    </div>
+  </section>
 
-<section class="strip" aria-labelledby="set-h">
-  <div class="wrap head">
-    <p class="eyebrow" data-i18n="set_eyebrow">The Setting</p>
-    <h2 id="set-h" data-i18n="set_h">Between the mountains and the sea</h2>
-  </div>
-  <div class="wrap cols">
-    <div class="col">
-      <div class="photo ph-gardens" aria-hidden="true"></div>
-      <div>
-        <h3 data-i18n="s1_h">Award-winning tropical gardens</h3>
-        <p data-i18n="s1_p">Over 26,000 m² of prize-winning landscaping: palms, waterfalls and flowering walkways cared for daily.</p>
-        <a class="more" href="#gallery" data-i18n="s1_a">View the gallery →</a>
-      </div>
+  <!-- Vision -->
+  <section class="vision on-dark" id="vision" aria-labelledby="vis-k">
+    <div class="container">
+      <figure class="vision-inner reveal">
+        <h2 class="vision-kicker" id="vis-k" data-i18n="vis_kicker">Our vision</h2>
+        <div class="vision-rule" aria-hidden="true"></div>
+        <blockquote data-i18n="vis_q">To preserve the architectural identity of Alcazaba Beach, with respect for the ideas and philosophy of Melvin Villarroel, who designed Andalusian-style apartments set within a tropical garden — while continuously improving its gardens, infrastructure and services, so that it remains one of the reference residential communities of the Costa del Sol.</blockquote>
+        <figcaption class="vision-sig">Agrupación de Comunidades de Propietarios · Alcazaba Beach</figcaption>
+      </figure>
     </div>
-    <div class="col">
-      <div class="photo ph-coast" aria-hidden="true"></div>
-      <div>
-        <h3 data-i18n="s2_h">Half a kilometre of beachfront</h3>
-        <p data-i18n="s2_p">A 500-metre stretch of Mediterranean shoreline with views to Gibraltar and the coast of Africa.</p>
-        <a class="more" href="#location" data-i18n="s2_a">Getting here →</a>
-      </div>
-    </div>
-    <div class="col">
-      <div class="photo ph-beach" aria-hidden="true"></div>
-      <div>
-        <h3 data-i18n="s3_h">Direct access to the Senda Litoral</h3>
-        <p data-i18n="s3_p">Fine dining, boutiques and beach clubs within walking distance, with Hacienda del Mar, Meliá Collection and Laguna Village next door.</p>
-        <a class="more" href="#location" data-i18n="s3_a">See the location →</a>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section class="vision" id="vision">
-  <div class="photo ph-arch" aria-hidden="true"></div>
-  <div class="inner">
-    <div>
-      <p class="eyebrow" data-i18n="vis_eyebrow">Our vision</p>
-      <blockquote>
-        <p class="lede" data-i18n="vis_p">To preserve the architectural identity of Alcazaba Beach, with respect for the ideas and philosophy of Melvin Villarroel, who designed Andalusian-style apartments set within a tropical garden, while continuously improving its gardens, infrastructure and services, so that it remains one of the reference residential communities of the Costa del Sol.</p>
-        <cite data-i18n="vis_cite">Agrupación de Comunidades de Propietarios, Alcazaba Beach</cite>
-      </blockquote>
-      <div class="award">
-        <h3 data-i18n="aw_h">Architectural Heritage Prize, 2007</h3>
-        <p data-i18n="aw_p">Awarded by the Government of Andalucía for Urbanisations of Environmental Interest, the region's highest accolade, alongside repeated Best Community Gardens awards.</p>
+  <!-- Amenities -->
+  <section class="amenities" id="amenities" aria-labelledby="am-h">
+    <div class="container">
+      <div class="section-head center reveal">
+        <p class="kicker" data-i18n="am_kicker">Amenities</p>
+        <h2 id="am-h" data-i18n="am_h">Everything a resort offers. Everything a home needs.</h2>
+        <p data-i18n="am_p">Facilities reserved exclusively for owners and residents, cared for year-round by our on-site team.</p>
       </div>
-    </div>
-    <ul class="facts" role="list" style="list-style:none">
-      <li class="fact">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l4-1L19 8l-3-3L5 16z"/><path d="M14 7l3 3"/><path d="M3 21h18"/></svg>
-        <span data-i18n="f1">Designed by Melvin Villarroel</span>
-      </li>
-      <li class="fact">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="1"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
-        <span data-i18n="f2">Conceived in the late 1980s</span>
-      </li>
-      <li class="fact">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M3 12l9 4 9-4"/><path d="M3 16l9 4 9-4"/></svg>
-        <span data-i18n="f3">Completed across five phases</span>
-      </li>
-      <li class="fact">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 20c0-7 4-11 10-11 0 6-4 11-10 11z"/><path d="M11 20c0-4-2-7-7-8 0 4 2 7 7 8z"/><path d="M11 20v2"/></svg>
-        <span data-i18n="f4">Repeated Best Community Gardens awards</span>
-      </li>
-      <li class="fact">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21c-4.5-4-7.5-7.4-7.5-11a7.5 7.5 0 0 1 15 0c0 3.6-3 7-7.5 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-        <span data-i18n="f5">Ten minutes from Estepona old town</span>
-      </li>
-    </ul>
-  </div>
-</section>
-
-<section class="amenities" id="amenities">
-  <div class="wrap top">
-    <div class="am-head">
-      <div>
-        <p class="eyebrow" data-i18n="am_eyebrow">Amenities</p>
-        <h2 data-i18n="am_h">Everything a resort offers. Everything a home needs.</h2>
-      </div>
-      <p data-i18n="am_p">Facilities reserved exclusively for owners and residents, cared for year-round by our on-site team.</p>
-    </div>
-    <div class="am-grid">
-      <div>
-        <div class="photo ph-pool" role="img" data-i18n-aria="img_pool" aria-label="Swimming pool among palms and lawns"></div>
-        <h3 data-i18n="a1_h">Seven swimming pools</h3><p data-i18n="a1_p">Pools set throughout the gardens, each serving its own phase and surrounded by lawns and planting.</p>
-      </div>
-      <div>
-        <div class="photo ph-tennis" role="img" data-i18n-aria="img_tennis" aria-label="Tennis courts in the gardens"></div>
-        <h3 data-i18n="a2_h">Tennis &amp; padel</h3><p data-i18n="a2_p">Five tennis courts and three padel courts, with an active community of players all season.</p>
-      </div>
-      <div>
-        <div class="photo ph-social" role="img" data-i18n-aria="img_social" aria-label="Restaurant and beach bar"></div>
-        <h3 data-i18n="a4_h">Restaurant &amp; beach bar</h3><p data-i18n="a4_p">A seasonal restaurant and chiringuito for the exclusive use of owners and their guests.</p>
-      </div>
-    </div>
-  </div>
-  <div class="wrap">
-    <div class="am-more">
-      <div>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5l4 3-1.5 4.5h-5L8 10.5z"/><path d="M12 3.5v4M20.2 9.8l-4.2.7M17 19l-2.5-4M7 19l2.5-4M3.8 9.8l4.2.7"/></svg>
-        <div><h3 data-i18n="a5_h">Football pitch</h3><p data-i18n="a5_p">A natural-grass football pitch, a rarity on the coast, loved by children and adults alike.</p></div>
-      </div>
-      <div>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V9l4-5 4 5v12"/><path d="M12 13h8M16 13v8M4 21h17"/><path d="M8 21v-4"/></svg>
-        <div><h3 data-i18n="a6_h">Children's playground</h3><p data-i18n="a6_p">A dedicated play area set in the gardens for younger residents and their guests.</p></div>
-      </div>
-      <div>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1"/><path d="M2 19h20M10 16v3M14 16v3"/></svg>
-        <div><h3 data-i18n="a7_h">Co-working space</h3><p data-i18n="a7_p">A shared workspace on site for residents who work remotely.</p></div>
-      </div>
-      <div>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="16" r="3.5"/><circle cx="18" cy="16" r="3.5"/><path d="M6 16l4-7h6l2 7M10 9l3 7h-7M9 6h3M15 6h2l-1 3"/></svg>
-        <div><h3 data-i18n="a8_h">Bicycle storage</h3><p data-i18n="a8_p">A secure storage room where residents can keep their bicycles.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="gallery" id="gallery">
-  <div class="wrap">
-    <div class="head">
-      <p class="eyebrow" data-i18n="gal_eyebrow">Gallery</p>
-      <h2 data-i18n="gal_h">Life at Alcazaba Beach</h2>
-    </div>
-    <div class="carousel" role="region" aria-roledescription="carousel" data-i18n-aria="gal_h" aria-label="Life at Alcazaba Beach">
-      <div class="track" tabindex="0">
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="1 / 6">
-          <div class="photo ph-poolsea" role="img" data-i18n-aria="g1" aria-label="Curved swimming pool with thatched parasols and the sparkling Mediterranean beyond"></div>
-        </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="2 / 6">
-          <div class="photo ph-flowers" role="img" data-i18n-aria="g2" aria-label="Flowering beds in the community gardens"></div>
-        </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="3 / 6">
-          <div class="photo ph-gazebo" role="img" data-i18n-aria="g3" aria-label="Wrought-iron pergola looking out over the sea"></div>
-        </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="4 / 6">
-          <div class="photo ph-terrace" role="img" data-i18n-aria="g4" aria-label="Sun loungers on the seafront terrace"></div>
-        </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="5 / 6">
-          <div class="photo ph-gpool" role="img" data-i18n-aria="g5" aria-label="Swimming pool framed by palms, with the Mediterranean beyond"></div>
-        </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="6 / 6">
-          <div class="photo ph-lawn" role="img" data-i18n-aria="g6" aria-label="Lawns and palms running down to the beachfront"></div>
-        </figure>
-      </div>
-      <button type="button" class="c-btn c-prev" data-i18n-aria="g_prev" aria-label="Previous photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-      <button type="button" class="c-btn c-next" data-i18n-aria="g_next" aria-label="Next photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-    </div>
-    <div class="c-foot">
-      <span class="c-count" aria-live="polite">1 / 6</span>
-      <div class="dots"><button type="button" data-go="0" aria-label="1 / 6"></button><button type="button" data-go="1" aria-label="2 / 6"></button><button type="button" data-go="2" aria-label="3 / 6"></button><button type="button" data-go="3" aria-label="4 / 6"></button><button type="button" data-go="4" aria-label="5 / 6"></button><button type="button" data-go="5" aria-label="6 / 6"></button></div>
-    </div>
-    <div class="thumbs">
-      <button type="button" data-go="0" data-i18n-aria="g1" aria-label="Curved swimming pool with thatched parasols and the sparkling Mediterranean beyond"><div class="photo ph-poolsea"></div></button>
-      <button type="button" data-go="1" data-i18n-aria="g2" aria-label="Flowering beds in the community gardens"><div class="photo ph-flowers"></div></button>
-      <button type="button" data-go="2" data-i18n-aria="g3" aria-label="Wrought-iron pergola looking out over the sea"><div class="photo ph-gazebo"></div></button>
-      <button type="button" data-go="3" data-i18n-aria="g4" aria-label="Sun loungers on the seafront terrace"><div class="photo ph-terrace"></div></button>
-      <button type="button" data-go="4" data-i18n-aria="g5" aria-label="Swimming pool framed by palms, with the Mediterranean beyond"><div class="photo ph-gpool"></div></button>
-      <button type="button" data-go="5" data-i18n-aria="g6" aria-label="Lawns and palms running down to the beachfront"><div class="photo ph-lawn"></div></button>
-    </div>
-  </div>
-</section>
-
-<section class="location" id="location">
-  <div class="wrap">
-    <div class="head">
-      <p class="eyebrow" data-i18n="loc_eyebrow">Location</p>
-      <h2 data-i18n="loc_h">Ten minutes from Estepona, thirty from everywhere</h2>
-      <p data-i18n="loc_addr">Calle del Mare Nostrum, Carretera Cádiz-Málaga, km 158, 29680 Estepona, Málaga, Spain</p>
-    </div>
-    <div class="loc-grid">
-      <ul class="loc-list">
-        <li>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21c-4.5-4-7.5-7.4-7.5-11a7.5 7.5 0 0 1 15 0c0 3.6-3 7-7.5 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-          <div><strong data-i18n="l1_h">Estepona old town: 10 min</strong><span data-i18n="l1_p">Or a 30-minute stroll along the seafront promenade.</span></div>
+      <ul class="amenity-grid">
+        <li class="amenity reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 16c1.5 1.2 3.5 1.2 5 0s3.5-1.2 5 0 3.5 1.2 5 0 3.5-1.2 5 0M3 20c1.5 1.2 3.5 1.2 5 0s3.5-1.2 5 0 3.5 1.2 5 0 3.5-1.2 5 0" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><path d="M7 12V6a2 2 0 0 1 4 0M11 12V6a2 2 0 0 1 4 0" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+          <h3 data-i18n="a1_h">Seven swimming pools</h3>
+          <p data-i18n="a1_p">Pools set throughout the gardens, each serving its own phase and surrounded by lawns and planting.</p>
         </li>
-        <li>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13l3-6h9l4 6h2a1 1 0 0 1 1 1v3h-2M3 13v4h2m-2-4h16"/><circle cx="8" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/></svg>
-          <div><strong data-i18n="l2_h">Puerto Banús: 15 min. Marbella: 25 min</strong><span data-i18n="l2_p">The best of the coast within easy reach by car.</span></div>
+        <li class="amenity reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="1.6"/><path d="M5.5 5.5c4 3 9 10 13 13M18.5 5.5c-4 3-9 10-13 13" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+          <h3 data-i18n="a2_h">Tennis &amp; padel</h3>
+          <p data-i18n="a2_p">Five tennis courts and three padel courts, with an active community of players all season.</p>
         </li>
-        <li>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 13.5 3 11l1.5-1.5 6.5 1L16 5.5a1.4 1.4 0 0 1 2 2L12.5 13l1 6.5L12 21l-2.5-7.5"/></svg>
-          <div><strong data-i18n="l3_h">Málaga Airport: 55 min. Gibraltar: 40 min</strong><span data-i18n="l3_p">Two international airports within an hour's drive.</span></div>
+        <li class="amenity reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="1.5" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="2.5" stroke="#fff" stroke-width="1.6"/><path d="M12 5v14M2 10h3v4H2M22 10h-3v4h3" stroke="#fff" stroke-width="1.6"/></svg></div>
+          <h3 data-i18n="a3_h">Football pitch</h3>
+          <p data-i18n="a3_p">A natural-grass football pitch — a rarity on the coast, loved by children and adults alike.</p>
         </li>
-        <li>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><path d="M2 21c2 0 2-1.5 4-1.5S8 21 10 21s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><path d="M5 13c3-6 9-9 15-9"/></svg>
-          <div><strong data-i18n="l4_h">Direct access to the Senda Litoral</strong><span data-i18n="l4_p">Fine dining, boutiques and beach clubs within walking distance.</span></div>
+        <li class="amenity reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.5 6.5v11M17.5 6.5v11M4 9v6M20 9v6M6.5 12h11" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+          <h3 data-i18n="a4_h">Gym &amp; sauna</h3>
+          <p data-i18n="a4_p">A new, state-of-the-art gymnasium is being built on the front line to the sea, facing directly onto the water — opening in 2027. The sauna is a separate facility in Phase 4.</p>
+        </li>
+        <li class="amenity reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h16M6 20V10l6-5 6 5v10" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 20v-4h4v4" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+          <h3 data-i18n="a5_h">Restaurant &amp; beach bar</h3>
+          <p data-i18n="a5_p">A seasonal restaurant and chiringuito for the exclusive use of owners and their guests.</p>
+        </li>
+        <li class="amenity reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 20h18" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><path d="M6.5 20V8.5M9.5 20V8.5M6.5 12h3M6.5 15.5h3" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><path d="M9.5 8.5c0 6.5 4 11.5 8.5 11.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><circle cx="17" cy="5" r="2" stroke="#fff" stroke-width="1.6"/></svg></div>
+          <h3 data-i18n="a6_h">Children's playground</h3>
+          <p data-i18n="a6_p">A dedicated play area set in the gardens for younger residents and their guests.</p>
+        </li>
+        <li class="amenity reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5" width="17" height="11" rx="1.6" stroke="#fff" stroke-width="1.6"/><path d="M2 19.5h20M10 9.5h4" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+          <h3 data-i18n="a7_h">Co-working space</h3>
+          <p data-i18n="a7_p">A shared workspace on site for residents who work remotely.</p>
+        </li>
+        <li class="amenity reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="5.5" cy="16.5" r="3.6" stroke="#fff" stroke-width="1.6"/><circle cx="18.5" cy="16.5" r="3.6" stroke="#fff" stroke-width="1.6"/><path d="M5.5 16.5 9.8 7.5h4.4l4.3 9M9.8 7.5h4.4M10.5 7.5l4.6 9" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3 data-i18n="a8_h">Bicycle storage</h3>
+          <p data-i18n="a8_p">A secure storage room where residents can keep their bicycles.</p>
         </li>
       </ul>
-      <div class="panel">
-        <div class="bar"><span data-i18n="map_bar">Alcazaba Beach, Estepona</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Alcazaba%20Beach%2C%20Estepona" target="_blank" rel="noopener" data-i18n="map_open">Open in Google Maps ↗</a></div>
-        <div class="photo map ph-aerial" role="img" data-i18n-aria="img_aerial" aria-label="Aerial view of Alcazaba Beach and its gardens"></div>
-        <div class="map-actions">
-          <button type="button" class="btn map-load" data-i18n="map_btn">Show the map</button>
-          <small data-i18n="map_note">Loads Google Maps, which may set cookies.</small>
+    </div>
+  </section>
+
+  <!-- The Setting -->
+  <section class="setting" id="setting" aria-labelledby="set-h">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="kicker" data-i18n="set_kicker">The Setting</p>
+        <h2 id="set-h" data-i18n="set_h">Between the mountains and the sea</h2>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card reveal">
+          <img src="img/beach.webp" width="1050" height="1400" loading="lazy" decoding="async" alt="">
+          <div class="overlay">
+            <h3 data-i18n="s1_h">Half a kilometre of beachfront</h3>
+            <p data-i18n="s1_p">A 500-metre stretch of Mediterranean shoreline with views to Gibraltar and the coast of Africa.</p>
+          </div>
+        </div>
+        <div class="feature-card reveal">
+          <img src="img/gardenpath.webp" width="1050" height="1400" loading="lazy" decoding="async" alt="">
+          <div class="overlay">
+            <h3 data-i18n="s2_h">Award-winning tropical gardens</h3>
+            <p data-i18n="s2_p">Over 26,000 m² of prize-winning landscaping — palms, waterfalls and flowering walkways cared for daily.</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <!-- Gallery -->
+  <section class="gallery" id="gallery" aria-labelledby="gal-h">
+    <div class="container">
+      <div class="section-head center reveal">
+        <p class="kicker" data-i18n="gal_kicker">Gallery</p>
+        <h2 id="gal-h" data-i18n="gal_h">Life at Alcazaba Beach</h2>
+      </div>
+      <ul class="gallery-grid reveal">
+        <li class="ph"><img src="img/poolsea-800.webp" srcset="img/poolsea-thumb.webp 480w, img/poolsea-800.webp 800w, img/poolsea.webp 1400w" sizes="(min-width: 1188px) 367px, (min-width: 961px) calc((100vw - 88px) / 3), (min-width: 721px) calc((100vw - 68px) / 2), calc(100vw - 32px)" width="1400" height="934" loading="lazy" decoding="async" data-i18n-alt="g1" alt="Curved swimming pool with thatched parasols and the sparkling Mediterranean beyond"></li>
+        <li class="ph"><img src="img/flowers-800.webp" srcset="img/flowers-thumb.webp 360w, img/flowers-800.webp 800w, img/flowers.webp 1050w" sizes="(min-width: 1188px) 367px, (min-width: 961px) calc((100vw - 88px) / 3), (min-width: 721px) calc((100vw - 68px) / 2), calc(100vw - 32px)" width="1050" height="1400" loading="lazy" decoding="async" data-i18n-alt="g2" alt="Flowering beds in the community gardens"></li>
+        <li class="ph"><img src="img/gazebo-800.webp" srcset="img/gazebo-thumb.webp 480w, img/gazebo-800.webp 800w, img/gazebo.webp 1400w" sizes="(min-width: 1188px) 367px, (min-width: 961px) calc((100vw - 88px) / 3), (min-width: 721px) calc((100vw - 68px) / 2), calc(100vw - 32px)" width="1400" height="934" loading="lazy" decoding="async" data-i18n-alt="g3" alt="Wrought-iron pergola looking out over the sea"></li>
+        <li class="ph"><img src="img/terrace-800.webp" srcset="img/terrace-thumb.webp 480w, img/terrace-800.webp 800w, img/terrace.webp 1400w" sizes="(min-width: 1188px) 367px, (min-width: 961px) calc((100vw - 88px) / 3), (min-width: 721px) calc((100vw - 68px) / 2), calc(100vw - 32px)" width="1400" height="934" loading="lazy" decoding="async" data-i18n-alt="g4" alt="Sun loungers on the seafront terrace"></li>
+        <li class="ph"><img src="img/gpool-800.webp" srcset="img/gpool-thumb.webp 480w, img/gpool-800.webp 800w, img/gpool.webp 1400w" sizes="(min-width: 1188px) 367px, (min-width: 961px) calc((100vw - 88px) / 3), (min-width: 721px) calc((100vw - 68px) / 2), calc(100vw - 32px)" width="1400" height="934" loading="lazy" decoding="async" data-i18n-alt="g5" alt="Swimming pool framed by palms, with the Mediterranean beyond"></li>
+        <li class="ph"><img src="img/lawn-800.webp" srcset="img/lawn-thumb.webp 480w, img/lawn-800.webp 800w, img/lawn.webp 1400w" sizes="(min-width: 1188px) 367px, (min-width: 961px) calc((100vw - 88px) / 3), (min-width: 721px) calc((100vw - 68px) / 2), calc(100vw - 32px)" width="1400" height="934" loading="lazy" decoding="async" data-i18n-alt="g6" alt="Lawns and palms running down to the beachfront"></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Location -->
+  <section class="location on-dark" id="location" aria-labelledby="loc-h">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="kicker" data-i18n="loc_kicker">Location</p>
+        <h2 id="loc-h" data-i18n="loc_h">Ten minutes from Estepona, thirty from everywhere</h2>
+        <p data-i18n="loc_addr">Calle del Mare Nostrum · Carretera Cádiz-Málaga, km 158 · 29680 Estepona, Málaga, Spain</p>
+      </div>
+      <div class="location-grid">
+        <ul class="loc-list reveal">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21c-4.5-4-7.5-7.4-7.5-11a7.5 7.5 0 0 1 15 0c0 3.6-3 7-7.5 11Z" stroke="#d9c495" stroke-width="1.6"/><circle cx="12" cy="10" r="2.5" stroke="#d9c495" stroke-width="1.6"/></svg>
+            <div><strong data-i18n="l1_h">Estepona old town — 10 min</strong><span data-i18n="l1_p">Or a 30-minute stroll along the seafront promenade.</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 13l3-6h9l4 6h2a1 1 0 0 1 1 1v3h-2M3 13v4h2m-2-4h16" stroke="#d9c495" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="17" r="1.8" stroke="#d9c495" stroke-width="1.6"/><circle cx="17" cy="17" r="1.8" stroke="#d9c495" stroke-width="1.6"/></svg>
+            <div><strong data-i18n="l2_h">Puerto Banús — 15 min · Marbella — 25 min</strong><span data-i18n="l2_p">The best of the coast within easy reach by car.</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10.5 13.5 3 11l1.5-1.5 6.5 1L16 5.5a1.4 1.4 0 0 1 2 2L12.5 13l1 6.5L12 21l-2.5-7.5" stroke="#d9c495" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div><strong data-i18n="l3_h">Málaga Airport — 55 min · Gibraltar — 40 min</strong><span data-i18n="l3_p">Two international airports within an hour's drive.</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19c2.5-6 6-9 8-9s5.5 3 8 9" stroke="#d9c495" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="6" r="2.5" stroke="#d9c495" stroke-width="1.6"/></svg>
+            <div><strong data-i18n="l4_h">Direct access to the Senda Litoral</strong><span data-i18n="l4_p">Fine dining, boutiques and beach clubs within walking distance — Hacienda del Mar, Meliá Collection and Laguna Village next door.</span></div>
+          </li>
+        </ul>
+        <div class="map-frame reveal">
+          <div class="map">
+            <img src="img/aerial.webp" width="1200" height="900" loading="lazy" decoding="async" data-i18n-alt="img_aerial" alt="Aerial view of Alcazaba Beach and its gardens">
+          </div>
+          <div class="map-actions">
+            <button type="button" class="btn btn-primary map-load" data-i18n="map_btn" aria-describedby="map-note">Show the map</button>
+            <small id="map-note" data-i18n="map_note">Loads Google Maps, which may set cookies.</small>
+          </div>
+          <a class="map-open" href="https://www.google.com/maps/search/?api=1&amp;query=Alcazaba%20Beach%2C%20Estepona" target="_blank" rel="noopener" data-i18n="map_open">Open in Google Maps (new tab) ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- For Owners & Residents -->
+  <section class="owners" id="owners" aria-labelledby="own-h">
+    <div class="container">
+      <div class="section-head center reveal">
+        <p class="kicker" data-i18n="own_kicker">For Owners &amp; Residents</p>
+        <h2 id="own-h" data-i18n="own_h">Your community, at your fingertips</h2>
+        <p data-i18n="own_p">Access community documents, your account and the administration office online.</p>
+      </div>
+      <div class="owners-grid">
+        <div class="owner-card reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2" stroke="#fff" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="15" r="1.6" fill="#fff"/></svg></div>
+          <h3 data-i18n="o1_h">Private area</h3>
+          <p data-i18n="o1_p">News, practical information, official documents and the community newsletter — in the owners’ area.</p>
+          <a class="btn btn-dark" href="https://patrick-munnelly.github.io/alcazaba-owner-preview/" data-i18n="o1_btn" data-i18n-aria="o1_aria" aria-label="Enter the owners' area">Enter</a>
+        </div>
+        <div class="owner-card reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+          <h3 data-i18n="o2_h">Administration office</h3>
+          <p data-i18n="o2_p">Our on-site administration team is happy to help with any question about the community.</p>
+          <a class="btn btn-dark" href="tel:+34952790819" data-i18n-aria="o2_aria" aria-label="Call the administration office: 952 790 819">952 790 819</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
 </main>
 
-<footer id="contact">
-  <div class="wrap">
-    <div class="cols">
-      <div>
-        <a class="logo" href="#top"><span class="logo-mark" role="img" aria-label="Alcazaba Beach"></span><span class="logo-tag">Estepona · Costa del Sol</span></a>
-        <p class="blurb" data-i18n="ft_blurb">A landmark residential community on Estepona's New Golden Mile: 380 apartments in award-winning gardens by the Mediterranean.</p>
+<footer class="site-footer on-dark" id="contact">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#top" data-i18n-aria="brand_label" aria-label="Alcazaba Beach, back to top"><img src="img/logo.png" width="224" height="79" alt="Alcazaba Beach"></a>
+        <span class="tag">Estepona · Costa del Sol</span>
+        <p data-i18n="ft_blurb">A landmark residential community on Estepona's New Golden Mile — 380 apartments in award-winning gardens by the Mediterranean.</p>
       </div>
-      <div>
-        <h4 data-i18n="ft_explore">Explore</h4>
+      <nav aria-labelledby="ft-explore">
+        <h2 id="ft-explore" data-i18n="ft_explore">Explore</h2>
         <ul>
           <li><a href="#heritage" data-i18n="nav_heritage">Heritage</a></li>
           <li><a href="#vision" data-i18n="nav_vision">Vision</a></li>
@@ -591,141 +735,247 @@
           <li><a href="#location" data-i18n="nav_location">Location</a></li>
           <li><a href="https://patrick-munnelly.github.io/alcazaba-owner-preview/" data-i18n="ft_owners">Owners' area</a></li>
         </ul>
-      </div>
+      </nav>
       <div>
-        <h4 data-i18n="ft_contact">Contact</h4>
-        <address>Calle del Mare Nostrum<br>Carretera Cádiz-Málaga, km 158<br>29680 Estepona, Málaga</address>
+        <h2 data-i18n="ft_contact">Contact</h2>
         <ul>
+          <li><address>Calle del Mare Nostrum<br>Carretera Cádiz-Málaga, km 158<br>29680 Estepona, Málaga</address></li>
           <li><a href="tel:+34952790819">952 790 819</a> · <a href="tel:+34952793223">952 793 223</a></li>
           <li><a href="mailto:admin@alcazababeach.com">admin@alcazababeach.com</a></li>
         </ul>
-        <p class="office" data-i18n="ft_office">Our on-site administration team is happy to help with any question about the community.</p>
       </div>
-      <div>
-        <h4 data-i18n="ft_legal">Legal</h4>
+      <nav aria-labelledby="ft-legal">
+        <h2 id="ft-legal" data-i18n="ft_legal">Legal</h2>
         <ul>
-          <li><a href="#" data-i18n="ft_privacy">Privacy policy</a></li>
-          <li><a href="#" data-i18n="ft_cookies">Cookies policy</a></li>
-          <li><a href="#" data-i18n="ft_notice">Legal notice</a></li>
+          <li><a href="privacy.html" data-legal data-i18n="ft_privacy">Privacy policy</a></li>
+          <li><a href="cookies.html" data-legal data-i18n="ft_cookies">Cookies policy</a></li>
+          <li><a href="legal-notice.html" data-legal data-i18n="ft_notice">Legal notice</a></li>
         </ul>
-      </div>
+      </nav>
     </div>
-    <div class="base">
+    <div class="footer-bottom">
       <span data-i18n="ft_copy">© 2026 Comunidad de Propietarios Alcazaba Beach. All rights reserved.</span>
-      <button type="button" class="lang-switch" data-i18n="ft_switch">Versión en español</button>
+      <button type="button" class="lang-toggle" data-i18n="ft_switch" lang="es">Versión en español</button>
     </div>
   </div>
 </footer>
 
 <script>
 (function(){
-  var T = {"en": {"doc_title": "Alcazaba Beach — Estepona, Costa del Sol", "doc_desc": "380 luxury apartments in 75,000 m² of award-winning tropical gardens, with over half a kilometre of private beachfront in Estepona.", "nav_heritage": "Heritage", "nav_vision": "Vision", "nav_amenities": "Amenities", "nav_gallery": "Gallery", "nav_location": "Location", "nav_contact": "Contact", "nav_owners": "Owners", "menu_open": "Open menu", "menu_close": "Close menu", "lang_label": "Language", "img_hero": "Alcazaba Beach apartments among palms and lawns", "hero_h": "Mediterranean living,<br><em>perfected</em> over decades.", "hero_p": "380 luxury apartments set in 75,000 m² of award-winning tropical gardens, with over half a kilometre of private beachfront in Estepona.", "hero_btn": "Discover Alcazaba Beach", "hero_owners": "Owners' Area", "set_eyebrow": "The Setting", "set_h": "Between the mountains and the sea", "s1_h": "Award-winning tropical gardens", "s1_p": "Over 26,000 m² of prize-winning landscaping: palms, waterfalls and flowering walkways cared for daily.", "s1_a": "View the gallery →", "s2_h": "Half a kilometre of beachfront", "s2_p": "A 500-metre stretch of Mediterranean shoreline with views to Gibraltar and the coast of Africa.", "s2_a": "Getting here →", "s3_h": "Direct access to the Senda Litoral", "s3_p": "Fine dining, boutiques and beach clubs within walking distance, with Hacienda del Mar, Meliá Collection and Laguna Village next door.", "s3_a": "See the location →", "her_eyebrow": "Our Heritage", "her_h": "A landmark of the Costa del Sol, in Estepona", "her_p1": "Conceived in the late 1980s and completed across five phases, Alcazaba Beach was designed by the renowned architect Melvin Villarroel, whose vision placed human space, the natural environment and Andalusian design tradition at the heart of the community.", "her_p2": "Today it remains one of the most prestigious residential estates on the coast: low-rise Mediterranean architecture woven through mature tropical gardens, cascading water features and shaded walkways, all meticulously maintained and just ten minutes from the historic centre of Estepona.", "st1_n": "380", "st1_l": "apartments", "st2_n": "500 m", "st2_l": "of beachfront", "st3_n": "75,000 m²", "st3_l": "of gardens", "st4_n": "7", "st4_l": "swimming pools", "vis_eyebrow": "Our vision", "vis_p": "To preserve the architectural identity of Alcazaba Beach, with respect for the ideas and philosophy of Melvin Villarroel, who designed Andalusian-style apartments set within a tropical garden, while continuously improving its gardens, infrastructure and services, so that it remains one of the reference residential communities of the Costa del Sol.", "vis_cite": "Agrupación de Comunidades de Propietarios, Alcazaba Beach", "aw_h": "Architectural Heritage Prize, 2007", "aw_p": "Awarded by the Government of Andalucía for Urbanisations of Environmental Interest, the region's highest accolade, alongside repeated Best Community Gardens awards.", "f1": "Designed by Melvin Villarroel", "f2": "Conceived in the late 1980s", "f3": "Completed across five phases", "f4": "Repeated Best Community Gardens awards", "f5": "Ten minutes from Estepona old town", "am_eyebrow": "Amenities", "am_h": "Everything a resort offers. Everything a home needs.", "am_p": "Facilities reserved exclusively for owners and residents, cared for year-round by our on-site team.", "a1_h": "Seven swimming pools", "a1_p": "Pools set throughout the gardens, each serving its own phase and surrounded by lawns and planting.", "a2_h": "Tennis &amp; padel", "a2_p": "Five tennis courts and three padel courts, with an active community of players all season.", "a4_h": "Restaurant &amp; beach bar", "a4_p": "A seasonal restaurant and chiringuito for the exclusive use of owners and their guests.", "a5_h": "Football pitch", "a5_p": "A natural-grass football pitch, a rarity on the coast, loved by children and adults alike.", "a6_h": "Children's playground", "a6_p": "A dedicated play area set in the gardens for younger residents and their guests.", "a7_h": "Co-working space", "a7_p": "A shared workspace on site for residents who work remotely.", "a8_h": "Bicycle storage", "a8_p": "A secure storage room where residents can keep their bicycles.", "img_pool": "Swimming pool among palms and lawns", "img_tennis": "Tennis courts in the gardens", "img_social": "Restaurant and beach bar", "gal_eyebrow": "Gallery", "gal_h": "Life at Alcazaba Beach", "g1": "Curved swimming pool with thatched parasols and the sparkling Mediterranean beyond", "g2": "Flowering beds in the community gardens", "g3": "Wrought-iron pergola looking out over the sea", "g4": "Sun loungers on the seafront terrace", "g5": "Swimming pool framed by palms, with the Mediterranean beyond", "g6": "Lawns and palms running down to the beachfront", "loc_eyebrow": "Location", "loc_h": "Ten minutes from Estepona, thirty from everywhere", "loc_addr": "Calle del Mare Nostrum, Carretera Cádiz-Málaga, km 158, 29680 Estepona, Málaga, Spain", "l1_h": "Estepona old town: 10 min", "l1_p": "Or a 30-minute stroll along the seafront promenade.", "l2_h": "Puerto Banús: 15 min. Marbella: 25 min", "l2_p": "The best of the coast within easy reach by car.", "l3_h": "Málaga Airport: 55 min. Gibraltar: 40 min", "l3_p": "Two international airports within an hour's drive.", "l4_h": "Direct access to the Senda Litoral", "l4_p": "Fine dining, boutiques and beach clubs within walking distance.", "map_bar": "Alcazaba Beach, Estepona", "map_btn": "Show the map", "map_note": "Loads Google Maps, which may set cookies.", "map_open": "Open in Google Maps ↗", "map_title": "Google map of Alcazaba Beach, Estepona", "g_prev": "Previous photo", "g_next": "Next photo", "img_aerial": "Aerial view of Alcazaba Beach and its gardens", "ft_blurb": "A landmark residential community on Estepona's New Golden Mile: 380 apartments in award-winning gardens by the Mediterranean.", "ft_explore": "Explore", "ft_owners": "Owners' area", "ft_contact": "Contact", "ft_office": "Our on-site administration team is happy to help with any question about the community.", "ft_legal": "Legal", "ft_privacy": "Privacy policy", "ft_cookies": "Cookies policy", "ft_notice": "Legal notice", "ft_copy": "© 2026 Comunidad de Propietarios Alcazaba Beach. All rights reserved.", "ft_switch": "Versión en español"}, "es": {"doc_title": "Alcazaba Beach — Estepona, Costa del Sol", "doc_desc": "380 apartamentos de lujo en 75.000 m² de jardines tropicales premiados, con más de medio kilómetro de frente de playa privado en Estepona.", "nav_heritage": "Historia", "nav_vision": "Visión", "nav_amenities": "Instalaciones", "nav_gallery": "Galería", "nav_location": "Ubicación", "nav_contact": "Contacto", "nav_owners": "Propietarios", "menu_open": "Abrir menú", "menu_close": "Cerrar menú", "lang_label": "Idioma", "img_hero": "Apartamentos de Alcazaba Beach entre palmeras y césped", "hero_h": "Vivir el Mediterráneo,<br><em>perfeccionado</em> durante décadas.", "hero_p": "380 apartamentos de lujo en 75.000 m² de jardines tropicales premiados, con más de medio kilómetro de frente de playa privado en Estepona.", "hero_btn": "Descubra Alcazaba Beach", "hero_owners": "Área de propietarios", "set_eyebrow": "El Entorno", "set_h": "Entre la montaña y el mar", "s1_h": "Jardines tropicales premiados", "s1_p": "Más de 26.000 m² de jardines galardonados: palmeras, cascadas y paseos floridos cuidados a diario.", "s1_a": "Ver la galería →", "s2_h": "Medio kilómetro de playa", "s2_p": "500 metros de litoral mediterráneo con vistas a Gibraltar y a la costa de África.", "s2_a": "Cómo llegar →", "s3_h": "Acceso directo a la Senda Litoral", "s3_p": "Restaurantes, boutiques y clubes de playa a poca distancia a pie, con Hacienda del Mar, Meliá Collection y Laguna Village al lado.", "s3_a": "Ver la ubicación →", "her_eyebrow": "Nuestra Historia", "her_h": "Un referente de la Costa del Sol, en Estepona", "her_p1": "Concebida a finales de los años 80 y completada en cinco fases, Alcazaba Beach fue diseñada por el reconocido arquitecto Melvin Villarroel, cuya visión situó el espacio humano, el entorno natural y la tradición andaluza en el corazón de la comunidad.", "her_p2": "Hoy sigue siendo una de las urbanizaciones más prestigiosas de la costa: arquitectura mediterránea de baja altura entre jardines tropicales maduros, cascadas y paseos sombreados, todo cuidado con esmero y a solo diez minutos del casco antiguo de Estepona.", "st1_n": "380", "st1_l": "apartamentos", "st2_n": "500 m", "st2_l": "de playa", "st3_n": "75.000 m²", "st3_l": "de jardines", "st4_n": "7", "st4_l": "piscinas", "vis_eyebrow": "Nuestra visión", "vis_p": "Preservar la identidad arquitectónica de Alcazaba Beach, con respeto por las ideas y la filosofía de Melvin Villarroel, que concibió apartamentos de estilo andaluz integrados en un jardín tropical, y mejorar de forma continua sus jardines, infraestructuras y servicios, para que siga siendo una de las comunidades residenciales de referencia de la Costa del Sol.", "vis_cite": "Agrupación de Comunidades de Propietarios, Alcazaba Beach", "aw_h": "Premio al Patrimonio Arquitectónico, 2007", "aw_p": "Otorgado por la Junta de Andalucía a Urbanizaciones de Interés Ambiental, la máxima distinción de la región, junto a repetidos premios a los mejores jardines comunitarios.", "f1": "Diseñada por Melvin Villarroel", "f2": "Concebida a finales de los años 80", "f3": "Completada en cinco fases", "f4": "Repetidos premios a los mejores jardines comunitarios", "f5": "A diez minutos del casco antiguo de Estepona", "am_eyebrow": "Instalaciones", "am_h": "Todo lo que ofrece un resort. Todo lo que necesita un hogar.", "am_p": "Instalaciones reservadas en exclusiva para propietarios y residentes, cuidadas todo el año por nuestro equipo.", "a1_h": "Siete piscinas", "a1_p": "Piscinas repartidas por los jardines, cada una al servicio de su fase y rodeada de césped y vegetación.", "a2_h": "Tenis y pádel", "a2_p": "Cinco pistas de tenis y tres de pádel, con una activa comunidad de jugadores durante toda la temporada.", "a4_h": "Restaurante y chiringuito", "a4_p": "Restaurante de temporada y chiringuito de uso exclusivo para propietarios y sus invitados.", "a5_h": "Campo de fútbol", "a5_p": "Un campo de fútbol de césped natural, una rareza en la costa, disfrutado por niños y mayores.", "a6_h": "Parque infantil", "a6_p": "Una zona de juegos en los jardines para los más pequeños y sus invitados.", "a7_h": "Espacio de coworking", "a7_p": "Un espacio de trabajo compartido en la urbanización para residentes que teletrabajan.", "a8_h": "Sala de bicicletas", "a8_p": "Un local seguro donde los residentes pueden guardar sus bicicletas.", "img_pool": "Piscina entre palmeras y césped", "img_tennis": "Pistas de tenis en los jardines", "img_social": "Restaurante y chiringuito", "gal_eyebrow": "Galería", "gal_h": "La vida en Alcazaba Beach", "g1": "Piscina de formas curvas con sombrillas de paja y el Mediterráneo al fondo", "g2": "Parterres en flor en los jardines de la comunidad", "g3": "Pérgola de hierro forjado con vistas al mar", "g4": "Hamacas en la terraza frente al mar", "g5": "Piscina rodeada de palmeras, con el Mediterráneo al fondo", "g6": "Céspedes y palmeras que descienden hasta la playa", "loc_eyebrow": "Ubicación", "loc_h": "A diez minutos de Estepona, a treinta de todo", "loc_addr": "Calle del Mare Nostrum, Carretera Cádiz-Málaga, km 158, 29680 Estepona, Málaga, España", "l1_h": "Casco antiguo de Estepona: 10 min", "l1_p": "O un paseo de 30 minutos por el paseo marítimo.", "l2_h": "Puerto Banús: 15 min. Marbella: 25 min", "l2_p": "Lo mejor de la costa a un paso en coche.", "l3_h": "Aeropuerto de Málaga: 55 min. Gibraltar: 40 min", "l3_p": "Dos aeropuertos internacionales a menos de una hora.", "l4_h": "Acceso directo a la Senda Litoral", "l4_p": "Restaurantes, boutiques y clubes de playa a poca distancia a pie.", "map_bar": "Alcazaba Beach, Estepona", "map_btn": "Mostrar el mapa", "map_note": "Carga Google Maps, que puede instalar cookies.", "map_open": "Abrir en Google Maps ↗", "map_title": "Mapa de Google de Alcazaba Beach, Estepona", "g_prev": "Foto anterior", "g_next": "Foto siguiente", "img_aerial": "Vista aérea de Alcazaba Beach y sus jardines", "ft_blurb": "Una comunidad residencial emblemática en la Nueva Milla de Oro de Estepona: 380 apartamentos entre jardines premiados junto al Mediterráneo.", "ft_explore": "Explorar", "ft_owners": "Área de propietarios", "ft_contact": "Contacto", "ft_office": "Nuestro equipo de administración estará encantado de ayudarle con cualquier consulta sobre la comunidad.", "ft_legal": "Legal", "ft_privacy": "Política de privacidad", "ft_cookies": "Política de cookies", "ft_notice": "Aviso legal", "ft_copy": "© 2026 Comunidad de Propietarios Alcazaba Beach. Todos los derechos reservados.", "ft_switch": "English version"}};
-  var navEl = document.querySelector('nav');
-  var burger = document.querySelector('.burger');
+  var T = {
+    en: {
+      doc_title: "Alcazaba Beach — Estepona, Costa del Sol",
+      doc_desc: "380 luxury apartments in 75,000 m² of award-winning tropical gardens, with over half a kilometre of private beachfront in Estepona.",
+      skip: "Skip to content",
+      nav_label: "Main", lang_label: "Language", menu_open: "Open menu", menu_close: "Close menu",
+      brand_label: "Alcazaba Beach, back to top", stats_label: "Alcazaba Beach in numbers",
+      nav_heritage: "Heritage", nav_vision: "Vision", nav_amenities: "Amenities", nav_gallery: "Gallery", nav_location: "Location", nav_owners: "Owners",
+      hero_kicker: "Estepona's New Golden Mile",
+      hero_h: "Mediterranean living, <em>perfected</em> over decades.",
+      hero_p: "380 luxury apartments set in 75,000 m² of award-winning tropical gardens, with over half a kilometre of private beachfront in Estepona.",
+      hero_btn: "Discover Alcazaba Beach", hero_owners: "Owners' Area",
+      st1: "Apartments", st2: "Beachfront", st3_n: "75,000&nbsp;m²", st3: "Gardens", st4: "Swimming pools",
+      her_kicker: "Our Heritage",
+      her_h: "A landmark of the Costa del Sol, in Estepona",
+      her_p1: "Conceived in the late 1980s and completed across five phases, Alcazaba Beach was designed by the renowned architect <strong>Melvin Villarroel</strong>, whose vision placed human space, the natural environment and Andalusian design tradition at the heart of the community.",
+      her_p2: "Today it remains one of the most prestigious residential estates on the coast: low-rise Mediterranean architecture woven through mature tropical gardens, cascading water features and shaded walkways — all meticulously maintained and just ten minutes from the historic centre of Estepona.",
+      aw_h: "Awards",
+      aw_p: "Alcazaba Beach has received several awards, such as Best Development on the Costa del Sol, Best Community Gardens on the Costa del Sol and the Architectural Heritage Prize for Urbanisations of Environmental Interest, awarded by the Government of Andalucía.",
+      img_heritage: "White Mediterranean terraces of Alcazaba Beach among palm gardens, with the mountains behind",
+      vis_kicker: "Our vision",
+      vis_q: "To preserve the architectural identity of Alcazaba Beach, with respect for the ideas and philosophy of Melvin Villarroel, who designed Andalusian-style apartments set within a tropical garden — while continuously improving its gardens, infrastructure and services, so that it remains one of the reference residential communities of the Costa del Sol.",
+      am_kicker: "Amenities",
+      am_h: "Everything a resort offers. Everything a home needs.",
+      am_p: "Facilities reserved exclusively for owners and residents, cared for year-round by our on-site team.",
+      a1_h: "Seven swimming pools", a1_p: "Pools set throughout the gardens, each serving its own phase and surrounded by lawns and planting.",
+      a2_h: "Tennis &amp; padel", a2_p: "Five tennis courts and three padel courts, with an active community of players all season.",
+      a3_h: "Football pitch", a3_p: "A natural-grass football pitch — a rarity on the coast, loved by children and adults alike.",
+      a4_h: "Gym &amp; sauna", a4_p: "A new, state-of-the-art gymnasium is being built on the front line to the sea, facing directly onto the water — opening in 2027. The sauna is a separate facility in Phase 4.",
+      a5_h: "Restaurant &amp; beach bar", a5_p: "A seasonal restaurant and chiringuito for the exclusive use of owners and their guests.",
+      a6_h: "Children's playground", a6_p: "A dedicated play area set in the gardens for younger residents and their guests.",
+      a7_h: "Co-working space", a7_p: "A shared workspace on site for residents who work remotely.",
+      a8_h: "Bicycle storage", a8_p: "A secure storage room where residents can keep their bicycles.",
+      set_kicker: "The Setting", set_h: "Between the mountains and the sea",
+      s1_h: "Half a kilometre of beachfront", s1_p: "A 500-metre stretch of Mediterranean shoreline with views to Gibraltar and the coast of Africa.",
+      s2_h: "Award-winning tropical gardens", s2_p: "Over 26,000 m² of prize-winning landscaping — palms, waterfalls and flowering walkways cared for daily.",
+      gal_kicker: "Gallery", gal_h: "Life at Alcazaba Beach",
+      g1: "Curved swimming pool with thatched parasols and the sparkling Mediterranean beyond",
+      g2: "Flowering beds in the community gardens",
+      g3: "Wrought-iron pergola looking out over the sea",
+      g4: "Sun loungers on the seafront terrace",
+      g5: "Swimming pool framed by palms, with the Mediterranean beyond",
+      g6: "Lawns and palms running down to the beachfront",
+      loc_kicker: "Location", loc_h: "Ten minutes from Estepona, thirty from everywhere",
+      loc_addr: "Calle del Mare Nostrum · Carretera Cádiz-Málaga, km 158 · 29680 Estepona, Málaga, Spain",
+      l1_h: "Estepona old town — 10 min", l1_p: "Or a 30-minute stroll along the seafront promenade.",
+      l2_h: "Puerto Banús — 15 min · Marbella — 25 min", l2_p: "The best of the coast within easy reach by car.",
+      l3_h: "Málaga Airport — 55 min · Gibraltar — 40 min", l3_p: "Two international airports within an hour's drive.",
+      l4_h: "Direct access to the Senda Litoral", l4_p: "Fine dining, boutiques and beach clubs within walking distance — Hacienda del Mar, Meliá Collection and Laguna Village next door.",
+      img_aerial: "Aerial view of Alcazaba Beach and its gardens",
+      map_btn: "Show the map", map_note: "Loads Google Maps, which may set cookies.",
+      map_open: "Open in Google Maps (new tab) ↗", map_title: "Google map of Alcazaba Beach, Estepona",
+      own_kicker: "For Owners &amp; Residents", own_h: "Your community, at your fingertips",
+      own_p: "Access community documents, your account and the administration office online.",
+      o1_h: "Private area", o1_p: "News, practical information, official documents and the community newsletter — in the owners’ area.",
+      o1_btn: "Enter", o1_aria: "Enter the owners' area",
+      o2_h: "Administration office", o2_p: "Our on-site administration team is happy to help with any question about the community.",
+      o2_aria: "Call the administration office: 952 790 819",
+      ft_blurb: "A landmark residential community on Estepona's New Golden Mile — 380 apartments in award-winning gardens by the Mediterranean.",
+      ft_explore: "Explore", ft_owners: "Owners' area", ft_contact: "Contact", ft_legal: "Legal",
+      ft_privacy: "Privacy policy", ft_cookies: "Cookies policy", ft_notice: "Legal notice",
+      ft_copy: "© 2026 Comunidad de Propietarios Alcazaba Beach. All rights reserved.",
+      ft_switch: "Versión en español", ft_switch_lang: "es"
+    },
+    es: {
+      doc_title: "Alcazaba Beach — Estepona, Costa del Sol",
+      doc_desc: "380 apartamentos de lujo en 75.000 m² de jardines tropicales premiados, con más de medio kilómetro de frente de playa privado en Estepona.",
+      skip: "Saltar al contenido",
+      nav_label: "Principal", lang_label: "Idioma", menu_open: "Abrir menú", menu_close: "Cerrar menú",
+      brand_label: "Alcazaba Beach, volver arriba", stats_label: "Alcazaba Beach en cifras",
+      nav_heritage: "Historia", nav_vision: "Visión", nav_amenities: "Instalaciones", nav_gallery: "Galería", nav_location: "Ubicación", nav_owners: "Propietarios",
+      hero_kicker: "Nueva Milla de Oro de Estepona",
+      hero_h: "Vivir el Mediterráneo, <em>perfeccionado</em> durante décadas.",
+      hero_p: "380 apartamentos de lujo en 75.000 m² de jardines tropicales premiados, con más de medio kilómetro de frente de playa privado en Estepona.",
+      hero_btn: "Descubra Alcazaba Beach", hero_owners: "Área de propietarios",
+      st1: "Apartamentos", st2: "De playa", st3_n: "75.000&nbsp;m²", st3: "De jardines", st4: "Piscinas",
+      her_kicker: "Nuestra Historia",
+      her_h: "Un referente de la Costa del Sol, en Estepona",
+      her_p1: "Concebida a finales de los años 80 y completada en cinco fases, Alcazaba Beach fue diseñada por el reconocido arquitecto <strong>Melvin Villarroel</strong>, cuya visión situó el espacio humano, el entorno natural y la tradición andaluza en el corazón de la comunidad.",
+      her_p2: "Hoy sigue siendo una de las urbanizaciones más prestigiosas de la costa: arquitectura mediterránea de baja altura entre jardines tropicales maduros, cascadas y paseos sombreados — todo cuidado con esmero y a solo diez minutos del casco antiguo de Estepona.",
+      aw_h: "Premios",
+      aw_p: "Alcazaba Beach ha recibido varios premios, como Mejor Urbanización de la Costa del Sol, Mejores Jardines Comunitarios de la Costa del Sol y el Premio al Patrimonio Arquitectónico para Urbanizaciones de Interés Ambiental, otorgado por la Junta de Andalucía.",
+      img_heritage: "Las terrazas blancas mediterráneas de Alcazaba Beach entre jardines de palmeras, con la montaña al fondo",
+      vis_kicker: "Nuestra visión",
+      vis_q: "Preservar la identidad arquitectónica de Alcazaba Beach, con respeto por las ideas y la filosofía de Melvin Villarroel, que concibió apartamentos de estilo andaluz integrados en un jardín tropical — y mejorar de forma continua sus jardines, infraestructuras y servicios, para que siga siendo una de las comunidades residenciales de referencia de la Costa del Sol.",
+      am_kicker: "Instalaciones",
+      am_h: "Todo lo que ofrece un resort. Todo lo que necesita un hogar.",
+      am_p: "Instalaciones reservadas en exclusiva para propietarios y residentes, cuidadas todo el año por nuestro equipo.",
+      a1_h: "Siete piscinas", a1_p: "Piscinas repartidas por los jardines, cada una al servicio de su fase y rodeada de césped y vegetación.",
+      a2_h: "Tenis y pádel", a2_p: "Cinco pistas de tenis y tres de pádel, con una activa comunidad de jugadores durante toda la temporada.",
+      a3_h: "Campo de fútbol", a3_p: "Un campo de fútbol de césped natural — una rareza en la costa, disfrutado por niños y mayores.",
+      a4_h: "Gimnasio y sauna", a4_p: "Se está construyendo un gimnasio de nueva planta y última generación en primera línea de playa, con vistas directas al mar — apertura prevista en 2027. La sauna es una instalación independiente situada en la Fase 4.",
+      a5_h: "Restaurante y chiringuito", a5_p: "Restaurante de temporada y chiringuito de uso exclusivo para propietarios y sus invitados.",
+      a6_h: "Parque infantil", a6_p: "Una zona de juegos en los jardines para los más pequeños y sus invitados.",
+      a7_h: "Espacio de coworking", a7_p: "Un espacio de trabajo compartido en la urbanización para residentes que teletrabajan.",
+      a8_h: "Sala de bicicletas", a8_p: "Un local seguro donde los residentes pueden guardar sus bicicletas.",
+      set_kicker: "El Entorno", set_h: "Entre la montaña y el mar",
+      s1_h: "Medio kilómetro de playa", s1_p: "500 metros de litoral mediterráneo con vistas a Gibraltar y a la costa de África.",
+      s2_h: "Jardines tropicales premiados", s2_p: "Más de 26.000 m² de jardines galardonados — palmeras, cascadas y paseos floridos cuidados a diario.",
+      gal_kicker: "Galería", gal_h: "La vida en Alcazaba Beach",
+      g1: "Piscina de formas curvas con sombrillas de paja y el Mediterráneo al fondo",
+      g2: "Parterres en flor en los jardines de la comunidad",
+      g3: "Pérgola de hierro forjado con vistas al mar",
+      g4: "Hamacas en la terraza frente al mar",
+      g5: "Piscina rodeada de palmeras, con el Mediterráneo al fondo",
+      g6: "Céspedes y palmeras que descienden hasta la playa",
+      loc_kicker: "Ubicación", loc_h: "A diez minutos de Estepona, a treinta de todo",
+      loc_addr: "Calle del Mare Nostrum · Carretera Cádiz-Málaga, km 158 · 29680 Estepona, Málaga, España",
+      l1_h: "Casco antiguo de Estepona — 10 min", l1_p: "O un paseo de 30 minutos por el paseo marítimo.",
+      l2_h: "Puerto Banús — 15 min · Marbella — 25 min", l2_p: "Lo mejor de la costa a un paso en coche.",
+      l3_h: "Aeropuerto de Málaga — 55 min · Gibraltar — 40 min", l3_p: "Dos aeropuertos internacionales a menos de una hora.",
+      l4_h: "Acceso directo a la Senda Litoral", l4_p: "Restaurantes, boutiques y clubes de playa a poca distancia a pie — Hacienda del Mar, Meliá Collection y Laguna Village, al lado.",
+      img_aerial: "Vista aérea de Alcazaba Beach y sus jardines",
+      map_btn: "Mostrar el mapa", map_note: "Carga Google Maps, que puede instalar cookies.",
+      map_open: "Abrir en Google Maps (nueva pestaña) ↗", map_title: "Mapa de Google de Alcazaba Beach, Estepona",
+      own_kicker: "Para Propietarios y Residentes", own_h: "Su comunidad, al alcance de la mano",
+      own_p: "Acceda a los documentos de la comunidad, a su cuenta y a la oficina de administración en línea.",
+      o1_h: "Área privada", o1_p: "Noticias, información práctica, documentos oficiales y el boletín de la comunidad — en el área de propietarios.",
+      o1_btn: "Entrar", o1_aria: "Entrar en el área de propietarios",
+      o2_h: "Oficina de administración", o2_p: "Nuestro equipo de administración estará encantado de ayudarle con cualquier consulta sobre la comunidad.",
+      o2_aria: "Llamar a la oficina de administración: 952 790 819",
+      ft_blurb: "Una comunidad residencial emblemática en la Nueva Milla de Oro de Estepona — 380 apartamentos entre jardines premiados junto al Mediterráneo.",
+      ft_explore: "Explorar", ft_owners: "Área de propietarios", ft_contact: "Contacto", ft_legal: "Legal",
+      ft_privacy: "Política de privacidad", ft_cookies: "Política de cookies", ft_notice: "Aviso legal",
+      ft_copy: "© 2026 Comunidad de Propietarios Alcazaba Beach. Todos los derechos reservados.",
+      ft_switch: "English version", ft_switch_lang: "en"
+    }
+  };
+
+  var header = document.querySelector('.site-header');
+  var toggle = document.querySelector('.nav-toggle');
   var mm = document.getElementById('mobile-menu');
   var menuOpen = false;
   var lang = 'en';
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  function onScroll(){ navEl.classList.toggle('solid', menuOpen || window.scrollY > 10); }
-  window.addEventListener('scroll', onScroll, {passive:true});
-  window.addEventListener('resize', onScroll);
+  // Header turns solid once the page scrolls (or while the mobile menu is open)
+  function onScroll(){ header.classList.toggle('scrolled', menuOpen || window.scrollY > 40); }
+  window.addEventListener('scroll', onScroll, {passive: true});
   onScroll();
 
+  // Language
   function setLang(l){
     lang = l;
-    document.documentElement.lang = l;
     var d = T[l];
+    document.documentElement.lang = l;
     document.querySelectorAll('[data-i18n]').forEach(function(el){ var k = el.getAttribute('data-i18n'); if (d[k] != null) el.innerHTML = d[k]; });
     document.querySelectorAll('[data-i18n-aria]').forEach(function(el){ var k = el.getAttribute('data-i18n-aria'); if (d[k] != null) el.setAttribute('aria-label', d[k]); });
+    document.querySelectorAll('[data-i18n-alt]').forEach(function(el){ var k = el.getAttribute('data-i18n-alt'); if (d[k] != null) el.setAttribute('alt', d[k]); });
     document.title = d.doc_title;
     var meta = document.querySelector('meta[name="description"]'); if (meta) meta.setAttribute('content', d.doc_desc);
-    document.querySelectorAll('.lang button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.lang === l)); });
-    burger.setAttribute('aria-label', menuOpen ? d.menu_close : d.menu_open);
+    document.querySelectorAll('.lang-switch button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.lang === l)); });
+    document.querySelector('.lang-toggle').setAttribute('lang', d.ft_switch_lang);
+    toggle.setAttribute('aria-label', menuOpen ? d.menu_close : d.menu_open);
     var mf = document.querySelector('.map iframe'); if (mf) mf.title = d.map_title;
+    // Legal pages open in the language the visitor is reading
+    document.querySelectorAll('[data-legal]').forEach(function(a){ a.href = a.getAttribute('href').split('?')[0] + (l === 'es' ? '?lang=es' : ''); });
   }
-  document.querySelectorAll('.lang button').forEach(function(b){
+  document.querySelectorAll('.lang-switch button').forEach(function(b){
     b.addEventListener('click', function(){ setLang(b.dataset.lang); });
   });
-  document.querySelector('.lang-switch').addEventListener('click', function(){ setLang(lang === 'en' ? 'es' : 'en'); });
-  // gallery carousel
-  var track = document.querySelector('.track');
-  var slides = track.querySelectorAll('.slide');
-  var prev = document.querySelector('.c-prev'), next = document.querySelector('.c-next');
-  var count = document.querySelector('.c-count');
-  var goers = document.querySelectorAll('[data-go]');
-  var cur = 0;
-  function go(i){ i = Math.max(0, Math.min(slides.length - 1, i)); track.scrollTo({left: i * track.clientWidth}); }
-  function mark(i){
-    cur = i;
-    count.textContent = (i + 1) + ' / ' + slides.length;
-    prev.disabled = i === 0; next.disabled = i === slides.length - 1;
-    goers.forEach(function(b){ b.setAttribute('aria-current', String(+b.dataset.go === i)); });
-  }
-  var st;
-  track.addEventListener('scroll', function(){ clearTimeout(st); st = setTimeout(function(){ mark(Math.round(track.scrollLeft / track.clientWidth)); }, 60); }, {passive:true});
-  prev.addEventListener('click', function(){ go(cur - 1); });
-  next.addEventListener('click', function(){ go(cur + 1); });
-  goers.forEach(function(b){ b.addEventListener('click', function(){ go(+b.dataset.go); }); });
-  track.addEventListener('keydown', function(e){
-    if (e.key === 'ArrowRight'){ e.preventDefault(); go(cur + 1); }
-    if (e.key === 'ArrowLeft'){ e.preventDefault(); go(cur - 1); }
-  });
-  window.addEventListener('resize', function(){ track.scrollLeft = cur * track.clientWidth; });
-  mark(0);
+  document.querySelector('.lang-toggle').addEventListener('click', function(){ setLang(lang === 'en' ? 'es' : 'en'); });
 
-  // Google Maps, loaded on request so nothing is sent to Google before the visitor chooses to
-  var mapBox = document.querySelector('.map');
-  document.querySelector('.map-load').addEventListener('click', function(){
-    var f = document.createElement('iframe');
-    f.src = 'https://www.google.com/maps?q=' + encodeURIComponent('Alcazaba Beach, Estepona') + '&ll=36.4313,-5.1186&z=15&hl=' + lang + '&output=embed';
-    f.title = T[lang].map_title;
-    f.setAttribute('loading', 'lazy');
-    f.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
-    f.setAttribute('allowfullscreen', '');
-    var actions = document.querySelector('.map-actions');
-    if (actions) actions.remove();
-    mapBox.removeAttribute('role'); mapBox.removeAttribute('aria-label'); mapBox.removeAttribute('data-i18n-aria');
-    mapBox.classList.add('loaded'); mapBox.appendChild(f);
-    f.focus();
-  });
-
-  // Photos load section by section as they come near the screen; without JS the CSS loads them all
-  var photoBoxes = [];
-  document.querySelectorAll('.photo:not(.ph-hero)').forEach(function(p){
-    var box = p.closest('section, footer') || p;
-    if (photoBoxes.indexOf(box) < 0) photoBoxes.push(box);
-  });
-  function showPhotos(box){ box.querySelectorAll('.photo').forEach(function(p){ p.classList.add('seen'); }); if (box.classList.contains('photo')) box.classList.add('seen'); }
-  if ('IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){ if (e.isIntersecting){ showPhotos(e.target); io.unobserve(e.target); } });
-    }, {rootMargin: '600px 0px'});
-    photoBoxes.forEach(function(b){ io.observe(b); });
-  } else {
-    photoBoxes.forEach(showPhotos);
-  }
-
-  var q = new URLSearchParams(location.search).get('lang');
-  if (q === 'es') setLang('es');
-
+  // Mobile menu
   function setMenu(open){
     menuOpen = open;
-    burger.setAttribute('aria-expanded', String(open));
-    burger.setAttribute('aria-label', open ? T[lang].menu_close : T[lang].menu_open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? T[lang].menu_close : T[lang].menu_open);
     mm.classList.toggle('open', open);
     document.body.style.overflow = open ? 'hidden' : '';
+    // Keep keyboard focus inside the open menu (nothing behind it can be reached)
+    document.querySelectorAll('main, .site-footer, .skip-link, .brand').forEach(function(el){ el.inert = open; });
     onScroll();
   }
-  burger.addEventListener('click', function(){ setMenu(!menuOpen); });
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && menuOpen){ setMenu(false); burger.focus(); } });
+  toggle.addEventListener('click', function(){ setMenu(!menuOpen); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && menuOpen){ setMenu(false); toggle.focus(); } });
   window.addEventListener('resize', function(){ if (window.innerWidth > 900 && menuOpen) setMenu(false); });
-  mm.querySelectorAll('.mm-link[href^="#"]').forEach(function(a){
+  mm.querySelectorAll('a[href^="#"]').forEach(function(a){
     a.addEventListener('click', function(e){
       e.preventDefault(); setMenu(false);
       var t = document.querySelector(a.getAttribute('href'));
-      if (t) t.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+      if (t) t.scrollIntoView({behavior: reduceMotion.matches ? 'auto' : 'smooth'});
     });
   });
+
+  // Google Maps, loaded only when the visitor asks, so nothing is sent to Google before then
+  document.querySelector('.map-load').addEventListener('click', function(){
+    var box = document.querySelector('.map');
+    var f = document.createElement('iframe');
+    f.src = 'https://www.google.com/maps?q=' + encodeURIComponent('Alcazaba Beach, Estepona') + '&ll=36.4313,-5.1186&z=15&hl=' + lang + '&output=embed';
+    f.title = T[lang].map_title;
+    f.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+    f.setAttribute('allowfullscreen', '');
+    box.innerHTML = '';
+    box.appendChild(f);
+    var actions = document.querySelector('.map-actions'); if (actions) actions.remove();
+    f.focus();
+  });
+
+  // Reveal on scroll (CSS keeps everything visible without JS or with reduced motion)
+  var reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !reduceMotion.matches){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, {rootMargin: '0px 0px -8% 0px', threshold: 0.08});
+    reveals.forEach(function(el){ io.observe(el); });
+  } else {
+    reveals.forEach(function(el){ el.classList.add('visible'); });
+  }
+  // Anything a keyboard user tabs into is shown straight away
+  document.addEventListener('focusin', function(e){ var r = e.target.closest && e.target.closest('.reveal'); if (r) r.classList.add('visible'); });
+
+  var q = new URLSearchParams(location.search).get('lang');
+  if (q === 'es') setLang('es');
 })();
 </script>
 </body>
