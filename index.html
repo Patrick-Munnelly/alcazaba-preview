@@ -86,6 +86,7 @@ body {
 }
 img, svg { max-width: 100%; display: block; }
 a { color: var(--sea); text-decoration: none; }
+[hidden] { display: none !important; }
 .container { width: min(1140px, calc(100% - 48px)); margin-inline: auto; }
 main section[id] { scroll-margin-top: var(--header-h); }
 
@@ -470,7 +471,7 @@ section { padding: 96px 0; }
       <a href="#amenities" data-i18n="nav_amenities">Amenities</a>
       <a href="#gallery" data-i18n="nav_gallery">Gallery</a>
       <a href="#location" data-i18n="nav_location">Location</a>
-      <a href="#owners" data-i18n="nav_owners">Owners</a>
+      <a href="#owners" data-owners hidden data-i18n="nav_owners">Owners</a>
       <div class="lang-switch" role="group" data-i18n-aria="lang_label" aria-label="Language">
         <button type="button" data-lang="en" aria-pressed="true" lang="en" aria-label="EN, English">EN</button><button type="button" data-lang="es" aria-pressed="false" lang="es" aria-label="ES, Español">ES</button>
       </div>
@@ -485,7 +486,7 @@ section { padding: 96px 0; }
   <a href="#amenities" data-i18n="nav_amenities">Amenities</a>
   <a href="#gallery" data-i18n="nav_gallery">Gallery</a>
   <a href="#location" data-i18n="nav_location">Location</a>
-  <a href="#owners" data-i18n="nav_owners">Owners</a>
+  <a href="#owners" data-owners hidden data-i18n="nav_owners">Owners</a>
   <div class="lang-switch" role="group" data-i18n-aria="lang_label" aria-label="Language">
     <button type="button" data-lang="en" aria-pressed="true" lang="en" aria-label="EN, English">EN</button><button type="button" data-lang="es" aria-pressed="false" lang="es" aria-label="ES, Español">ES</button>
   </div>
@@ -501,7 +502,7 @@ section { padding: 96px 0; }
       <p data-i18n="hero_p">380 luxury apartments set in 75,000 m² of award-winning tropical gardens, with over half a kilometre of private beachfront in Estepona.</p>
       <div class="btn-row">
         <a class="btn btn-primary" href="#heritage" data-i18n="hero_btn">Discover Alcazaba Beach</a>
-        <a class="btn btn-ghost" href="https://patrick-munnelly.github.io/alcazaba-owner-preview/" data-i18n="hero_owners">Owners' Area</a>
+        <a class="btn btn-ghost" href="https://patrick-munnelly.github.io/alcazaba-owner-preview/" data-owners hidden data-i18n="hero_owners">Owners' Area</a>
       </div>
     </div>
   </section>
@@ -690,8 +691,8 @@ section { padding: 96px 0; }
     </div>
   </section>
 
-  <!-- For Owners & Residents -->
-  <section class="owners" id="owners" aria-labelledby="own-h">
+  <!-- For Owners & Residents (hidden until the owners' portal is ready: remove every "data-owners hidden") -->
+  <section class="owners" id="owners" aria-labelledby="own-h" data-owners hidden>
     <div class="container">
       <div class="section-head center reveal">
         <p class="kicker" data-i18n="own_kicker">For Owners &amp; Residents</p>
@@ -733,7 +734,7 @@ section { padding: 96px 0; }
           <li><a href="#amenities" data-i18n="nav_amenities">Amenities</a></li>
           <li><a href="#gallery" data-i18n="nav_gallery">Gallery</a></li>
           <li><a href="#location" data-i18n="nav_location">Location</a></li>
-          <li><a href="https://patrick-munnelly.github.io/alcazaba-owner-preview/" data-i18n="ft_owners">Owners' area</a></li>
+          <li data-owners hidden><a href="https://patrick-munnelly.github.io/alcazaba-owner-preview/" data-i18n="ft_owners">Owners' area</a></li>
         </ul>
       </nav>
       <div>
